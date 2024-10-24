@@ -1,0 +1,32 @@
+Hi Matt and Matt,
+
+Great seeing you fellows last night! As promised, several screenshots showing the disconnected streets in Seattle.
+In all the screenshots, the red lines are the “missing” segments and the black lines are the existing streets. The missing segments were computed by drawing the shortest, straight-line distance between the end of one segment of a particular street and the beginning of the next segment of a street with the same name. 
+
+
+dis_streets_01_overall.png - A map showing all of the known and missing street segments. 
+Beginning with a dataset from the City of Seattle's GIS office and filtering out road types such as highways and pedestrian-only-pathways, I found 2,510 uniquely named streets. A unique street includes the direction and the street type. In this case, W Galer ST is not the same as E Galer ST (more on this choice in a bit). Of these 2,510 streets: 2,257 featured a discontinuity and 253 streets did not feature a discontinuity. In total, I created 3,611 missing segments. When I first started this, I assumed there would only be 5 to 10 streets with missing segments. Not the case! And that's because I was only thinking of major discontinuities (more than several hundred feet) and not the minor discontinuities where the street shifts or jogs a little one way or another.  To that end, half of the missing segments are about 450 feet or shorter in length. The longest missing segment is 7th PL S at nearly five miles, which begins in SODO and ends in South Park. And the shortest missing segment is in South Delridge at almost 4 feet between two sections of SW Cloverdale ST. 
+
+dis_streets_02_51.png - Streets and avenues named 51: NE 51ST ST, 51ST AVE NE, 51ST AVE SW, and 51st AVE S. 
+This image highlights why I had to include direction and street type in the name of the street when considering unique streets. When I first started this project, I didn't include direction and street as components that uniquely identify a street and so I ended up with the entirety of 51ST connected into one giant mess. I could see in future iterations some logic to make additional connections based on city quadrant or street type. But for now, I am including both direction street type as components that uniquely identify a street. 
+
+dis_streets_03_galer_ave.png - A street named Galer cuts across the city! It runs from salt water to two bodies of fresh water.
+This is the street that probably led me down this path. I was out for a walk in Magnolia and I noticed that Galer was cut in two pieces and that the two pieces were separated by a greenbelt and elevation and I began to wonder how common these breaks are across the city. There are three streets with the name Galer: 
+W Galer ST (Magnolia and Queen Anne - 4 discontinuities), Galer ST (East Queen Anne Hill - 1 discontinuity, and E Galer ST (Capitol Hill / Madison Park - 4 discontinuities).
+
+dis_streets_04_massachusetts_ave.png - Massachusetts runs from Admiral in West Seattle, cuts across to the north part of Harbor Island, and then picks up again in the Industrial District and continues eastward through North Beacon Hill and North Rainer Valley. One of the more interesting examples of these broken street. But it also shows why there isn't a connection between the street on Harbor Island and the street in the Industrial District. 
+
+dis_streets_05_north_capitol_hill.png - A good example showing how water features, parks, restricted neighborhoods, and general topography cause the discontinuities. 
+
+dis_streets_06_green_lake.png - Another example showing how a water feature and a park cause discontinuities. The grid MUST go on.
+
+dis_streets_07_10_longest_missing_segments.png - Finally, an image showing the 10 longest missing segments. These streets are all in south Seattle. I'm not yet sure what to make of that. 
+
+As for what's next? Verifying the input dataset, some more detailed analytics, and hosting this on a webpage so that others can explore. I did find a few oddities in the input dataset - small pieces of streets that probably don't exist which is creating shorter segments when they should be longer. That being said, based on my review of several dozen longer segments, this seems accurate. I do suspect that there is a more recent dataset from the City of Seattle I could use. Or I could try downloading an export from OpenStreetMap. But this is what I had on hand and I think it works well for a version 1.0. Finally, I would like to put this on a webpage so that others can interact with these data. 
+
+If you have any questions, comments, or feedback, please let me know. This has been a lot of fun so far and I will try out a few more things to see what else I can come up with. 
+
+I hope you all are well and all my best,
+
+Mike
+
