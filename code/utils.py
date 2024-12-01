@@ -18,8 +18,6 @@ from shapely.geometry import LineString, Point
 from shapely import line_merge
 
 
-
-
 def write_gdf(gdf: gpd.GeoDataFrame, output_file_path:str, output_file_name:str):
     
     ofpn = os.path.join(output_file_path, output_file_name)
