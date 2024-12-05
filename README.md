@@ -39,7 +39,7 @@ Finding discontinuities in Seattle streets is spread across three Jupyter notebo
 * [step_04_prepare_graphs_and_states.ipynb](/code/step_04_prepare_graphs_and_states.ipynb)
 * [step_05_drawn_an_nx_graph.ipynb](/code/step_05_drawn_an_nx_graph.ipynb)
 
-In step 01, the downloaded street network data is loaded as GeoPandas GeoDataFrame and I being selecting roads. After removing certain types of roads, the count of segments from ~34K to ~27K across 2,497 unique roads. In this case, a unique road includes both the road name, the road type, and direction prefix or suffix. In this case, `W GALER ST != GALER ST != E GALER ST`.
+In step 01, the downloaded street network data is loaded as GeoPandas GeoDataFrame and I select a set of working roads. After removing certain types of roads and roads within the City of Seattle, the count of segments decreases from ~34K to ~27K across 2,497 unique roads. In this case, a unique road includes both the road name, the road type, and direction prefix or suffix. In this case, `W GALER ST != GALER ST != E GALER ST`.
 
 
 
