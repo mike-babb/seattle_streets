@@ -6,17 +6,12 @@
 import os
 
 # external
-from itertools import combinations, product
 import geopandas as gpd
 import math
-from matplotlib.patches import Rectangle
-import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from shapely.geometry import LineString, Point
-from shapely import line_merge
 
 
 def write_gdf(gdf: gpd.GeoDataFrame, output_file_path:str, output_file_name:str):

@@ -1,0 +1,35 @@
+.
+├── README.md
+├── assets
+│   ├── AVE_dist_histogram.png
+│   ├── BLVD_dist_histogram.png
+│   ├── CT_dist_histogram.png
+│   ├── DR_dist_histogram.png
+│   ├── LN_dist_histogram.png
+│   ├── PKWY_dist_histogram.png
+│   ├── PL_dist_histogram.png
+│   ├── RD_dist_histogram.png
+│   ├── ST_dist_histogram.png
+│   ├── WAY_dist_histogram.png
+│   ├── _all_streets_dist_histogram.png
+│   └── seattle_sections.png
+├── code
+│   ├── step_01_import_export_street_data.ipynb
+│   ├── step_02_export_nodes_seattle_streets.ipynb
+│   ├── step_03_find_discontinuities.ipynb
+│   ├── step_04_prepare_graphs_and_states.ipynb
+│   ├── step_05_drawn_an_nx_graph.ipynb
+│   ├── streets_to_remove.txt
+│   └── utils.py
+├── data
+│   ├── Seattle_City_Limits_3136622578314448116.gpkg
+│   ├── Street_Network_Database_SND_5117857036965774451.gpkg
+│   ├── Street_Network_Database_Seattle_Central_Streets.csv
+│   └── blank_street_type_modified.xlsx
+├── dir_tree.txt
+├── maps
+│   └── seattle_streets.qgz
+├── seattles_disconnected_streets_2024_11_20.pptx
+└── test_map.html
+
+4 directories, 28 files

@@ -16,7 +16,7 @@ The table below summarizes the number of discontinuties in each portion.
 |W Galer ST | 5 | 4|
 |W Galer ST Flyover | 1 | 0|
 
-The streets with the name Galer differ based on street prefix and street type. E Galer Street is found in the Eastern Portion of the city and W Galer is found in the wester portion of the city. The suffix 'ST' indicates the road is of type "street" - a navigatable road - while the suffix 'PL' indicates the road is of type "Place", a road with a dead end that is accessible only from a main street. 
+The streets with the name Galer differ based on street prefix and street type. E Galer Street is found in the Eastern Portion of the city and W Galer is found in the wester portion of the city. The suffix 'ST' indicates the road is of type "street" - a navigatable road - while the suffix 'PL' indicates the road is of type "Place", a road with a dead end that is accessible only from a main street. One of the components driving the disconnected streets is the different sections of the city and when streets transition from one section to another. 
 
 # City Sections
 Seattle is divided into eight sections, basesd on compass directions. The eight sections can be seen in the image below.
@@ -39,16 +39,61 @@ Finding discontinuities in Seattle streets is spread across three Jupyter notebo
 * [step_04_prepare_graphs_and_states.ipynb](/code/step_04_prepare_graphs_and_states.ipynb)
 * [step_05_drawn_an_nx_graph.ipynb](/code/step_05_drawn_an_nx_graph.ipynb)
 
-In step 01, the downloaded street network data is loaded as GeoPandas GeoDataFrame and I select a set of working roads. After removing certain types of roads and roads within the City of Seattle, the count of segments decreases from ~34K to ~27K across 2,497 unique roads. In this case, a unique road includes both the road name, the road type, and direction prefix or suffix. In this case, `W GALER ST != GALER ST != E GALER ST`.
+In `step 01`, the downloaded street network data is loaded as GeoPandas GeoDataFrame and I perform some moderate data clean up. `Step 02` features additional data pre-processing and the creation of the city sections as seen in the figure above. After removing certain types of roads and roads within the City of Seattle, the count of segments decreases from ~34K to ~27K across 2,497 unique roads. In this case, a unique road includes both the road name, the road type, and direction prefix or suffix. In this case, `W GALER ST != GALER ST != E GALER ST`. `Step 03` features the identification of disconnected streets and the creation of segments joining the disconnected streets. These data are saved to a geopackage. In `step 04`, I conduct a series of analyses to better understand the distribution of created streets. In particular, I create a histogram of the added segements. Most missing segments are short: the average added segment length is a little less than a quarter of a mile. `Step 05` is a utility file that shows how to create a simple plot of the networkx graph.
 
+## Facts about the streets added:
+* 2,497 roads in the study area | 1,933 road miles
+* 1,357 roads without discontinuities | 421 road miles
+* 1,140 roads with discontinuities | 1,512 road miles
+* 3,643 segments added across 1,140 roads | 834 miles 
+* Average of ~3.2 segments per road
+* Average segment length: ~0.23 Miles
+* Median segment length: ~443 Feet
+* Greatest number of segments added: 14
+* (1ST AVE NW, 30TH AVE S, 35TH AVE S, W RAYE ST)
+* Longest segment: ~5 Miles:  7Th PL S 
+* Shortest segment: ~4 Feet: SW Cloverdale ST
 
+Below is a histogram of the added streets:
+![histogram of added streets](/assets/_all_streets_dist_histogram.png)
+This figure features a number of descriptive statistics showcasing the distribution of the length of the added segments. `Step 04` also features the creation of histograms for each street type.
 
-
-streets_to_remove.txt
-utils.py
-
-After downloading the data, the first step is to load the data and 
-
+# File Tree and File Description
+ 
+├── README.md - This file  
+├── assets 
+│   ├── AVE_dist_histogram.png - histograms for roads of type: Avenue  
+│   ├── BLVD_dist_histogram.png - histograms for roads of type: Boulevard  
+│   ├── CT_dist_histogram.png - histograms for roads of type: Court  
+│   ├── DR_dist_histogram.png - histograms for roads of type: Drive  
+│   ├── LN_dist_histogram.png - histograms for roads of type: Lane  
+│   ├── PKWY_dist_histogram.png - histograms for roads of type: Parkway  
+│   ├── PL_dist_histogram.png - histograms for roads of type: Place  
+│   ├── RD_dist_histogram.png - histograms for roads of type: Road  
+│   ├── ST_dist_histogram.png - histograms for roads of type: Street  
+│   ├── WAY_dist_histogram.png - histograms for roads of type: Way  
+│   ├── _all_streets_dist_histogram.png - histograms for all roads  
+│   └── seattle_sections.png - maps of the sections in the City of Seattle  
+├── code  
+│   ├── step_01_import_export_street_data.ipynb - import data and perform minimal formatting  
+│   ├── step_02_export_nodes_seattle_streets.ipynb - curate a list of working streets, create the city sections  
+│   ├── step_03_find_discontinuities.ipynb  
+│   ├── step_04_prepare_graphs_and_states.ipynb  
+│   ├── step_05_drawn_an_nx_graph.ipynb  
+│   ├── streets_to_remove.txt  
+│   └── utils.py  
+├── data  
+│   ├── Seattle_City_Limits_3136622578314448116.gpkg  
+│   ├── Street_Network_Database_SND_5117857036965774451.gpkg  
+│   ├── Street_Network_Database_Seattle_Central_Streets.csv  
+│   └── blank_street_type_modified.xlsx  
+├── dir_tree.txt  
+├── maps  
+│   └── seattle_streets.qgz  
+├── seattles_disconnected_streets_2024_11_20.pptx  
+└── test_map.html  
+  
+4 directories, 28 files
 
 
 
