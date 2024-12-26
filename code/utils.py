@@ -1,6 +1,5 @@
 # mike babb
-# 2024 06 28
-# what streets start and stop?
+# utility functions for seattle streets
 
 # standard
 import os
@@ -8,10 +7,9 @@ import os
 # external
 import geopandas as gpd
 import math
-import networkx as nx
 import numpy as np
 import pandas as pd
-import seaborn as sns
+
 
 
 def write_gdf(gdf: gpd.GeoDataFrame, output_file_path:str, output_file_name:str):
@@ -28,9 +26,7 @@ def write_gdf(gdf: gpd.GeoDataFrame, output_file_path:str, output_file_name:str)
 
 def subset_node_gdf(node_gdf:gpd.GeoDataFrame, other_node_df:pd.DataFrame):
     node_subset_gdf = pd.merge(left = node_gdf, right = other_node_df)
-    return node_subset_gdf
-    
-
+    return node_subset_gdf   
 
 def points2distance(start, end, unit):
     """
@@ -61,7 +57,6 @@ def points2distance(start, end, unit):
         earths_radius = 6731
     # return the distance between the two points
     return earths_radius * c
-
 
 
 if __name__ == '__main__':

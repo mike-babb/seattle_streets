@@ -1,6 +1,6 @@
 .
 ├── README.md
-├── assets
+├── graphics
 │   ├── AVE_dist_histogram.png
 │   ├── BLVD_dist_histogram.png
 │   ├── CT_dist_histogram.png

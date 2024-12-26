@@ -46,6 +46,7 @@ itch.ipynb
 *.log
 Untitled*.ipynb
 untitled*.ipynb
+test_python.ipynb
 
 # machine specific configuation files
 .vscode/launch.json

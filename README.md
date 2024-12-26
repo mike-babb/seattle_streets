@@ -20,7 +20,7 @@ The streets with the name Galer differ based on street prefix and street type. E
 
 # City Sections
 Seattle is divided into eight sections, basesd on compass directions. The eight sections can be seen in the image below.
-![sections in Seattle](/assets/seattle_sections.png) 
+![sections in Seattle](/graphics/seattle_sections.png) 
 The map on the left features the sections identified by direction prefix or direction suffix. Roads without a direction prefix or suffix are label as No direction. Interestingly, the majority of roads without a direction prefix or suffix are located in the central business district. Throughout Seattle, streets run east/west and avenues run north/south. In the central business district, both streets and avenues are directionless. North of Denny way, streets are directionless while avenues are not. East of Broadway, streets feature a direction while avenues do not. Note that throughout the city, there are streets without a direction prefix or suffix, but this is limited to specific roads and road types (trails and interstates, for example). The image on the right is the convex hull surrounding each road type (after removing certain roads and typs). Before starting this project, I had a general idea about the extents of the city sections. These maps was helpful in diagnosing why some roads were being connected and some where not. I'll explain more about that in a bit. [Step 01](/code/step_01_import_export_street_data.ipynb) and [step 02](/code/step_02_export_nodes_seattle_streets.ipynb) identify the city sections on the streets and create these data.
 
 # Data
@@ -55,13 +55,13 @@ In `step 01`, the downloaded street network data is loaded as GeoPandas GeoDataF
 * Shortest segment: ~4 Feet: SW Cloverdale ST
 
 Below is a histogram of the added streets:
-![histogram of added streets](/assets/_all_streets_dist_histogram.png)
+![histogram of added streets](/graphics/_all_streets_dist_histogram.png)
 This figure features a number of descriptive statistics showcasing the distribution of the length of the added segments. `Step 04` also features the creation of histograms for each street type.
 
 # File Tree and File Description
  
 ├── README.md - This file  
-├── assets 
+├── graphics 
 │   ├── AVE_dist_histogram.png - histograms for roads of type: Avenue  
 │   ├── BLVD_dist_histogram.png - histograms for roads of type: Boulevard  
 │   ├── CT_dist_histogram.png - histograms for roads of type: Court  
