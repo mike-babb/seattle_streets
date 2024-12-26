@@ -75,12 +75,12 @@ This figure features a number of descriptive statistics showcasing the distribut
 │   ├── _all_streets_dist_histogram.png - histograms for all roads  
 │   └── seattle_sections.png - maps of the sections in the City of Seattle  
 ├── code  
-│   ├── step_01_import_export_street_data.ipynb - import data and perform minimal formatting  
-│   ├── step_02_export_nodes_seattle_streets.ipynb - curate a list of working streets, create the city sections  
-│   ├── step_03_find_discontinuities.ipynb  
-│   ├── step_04_prepare_graphs_and_states.ipynb  
-│   ├── step_05_drawn_an_nx_graph.ipynb  
-│   ├── streets_to_remove.txt  
+│   ├── step_01_import_export_street_data.ipynb - import data and perform minimal formatting.  
+│   ├── step_02_export_nodes_seattle_streets.ipynb - curate the set of working streets, create the city sections.  
+│   ├── step_03_find_discontinuities.ipynb - use NetworkX to identify discontinuities and create the missing segments.  
+│   ├── step_04_prepare_graphs_and_states.ipynb - conduct analyses on the missing segments.
+│   ├── step_05_drawn_an_nx_graph.ipynb  - plot a NetworkX graph object of Galer. The plot changes everytime the code is run. 
+│   ├── streets_to_remove.txt - a list (nine, as of 2024/12/25) of short  segments from the original data that can be removed. These are most likely erronneous data artifacts inadvertently left in. These were discovered by panning around an instance of qGIS visually identifying oddities. I have no doubt there are more to discover.
 │   └── utils.py  
 ├── data  
 │   ├── Seattle_City_Limits_3136622578314448116.gpkg  

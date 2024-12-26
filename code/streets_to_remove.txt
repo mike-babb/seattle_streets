@@ -1,10 +1,10 @@
 snd_id,description
-48389, Small Segment of Sandpoint Way NE
-49318, Small Segment of NE 9TH ST
-49319, Small Segment of 5th AVE NE
-49303, Small segment of Roosevelt Way NE
-48807, Small Segment of Elliot AVE W
-49108, Small segment of Lake Washington BLVD S
-47784, Small segment of 15TH AVE W
-47785, Small segment of 15TH AVE W
-47787, Small segment of 15TH AVE W
+48389, short segment of sandpoint Way NE
+49318, short segment of NE 9TH ST
+49319, short segment of 5th AVE NE
+49303, short segment of Roosevelt Way NE
+48807, short segment of Elliot AVE W
+49108, short segment of Lake Washington BLVD S
+47784, short segment of 15TH AVE W
+47785, short segment of 15TH AVE W
+47787, short segment of 15TH AVE W
