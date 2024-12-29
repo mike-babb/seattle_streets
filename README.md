@@ -28,18 +28,18 @@ The data powering this analysis is a single GeoPackage from the City of Seattle:
 https://data-seattlecitygis.opendata.arcgis.com/datasets/783fd63545304bdf9d3c5f2065751614_0/explore
 
 These are the streets in and near the City of Seattle. This dataset appears to be
-updated frequently, so I saved the version I downloaded into the [/data](/data/Street_Network_Database_SND_5117857036965774451.gpkg) of this repo. 
+updated frequently, so I saved the version I downloaded into the [/data](/data/Street_Network_Database_SND_5117857036965774451.gpkg) folder of this repo. 
 I downloaded a copy of the street network dataset on 2024/11/09 at 5:20 PM.
 
 # The technique
-Finding discontinuities in Seattle streets is spread across three Jupyter notebooks with two notebooks containing additional analysess.
+Finding discontinuities in Seattle streets is spread across three Jupyter notebooks with two notebooks containing additional analyses.
 * [step_01_import_export_street_data.ipynb](/code/step_01_import_export_street_data.ipynb)
 * [step_02_export_nodes_seattle_streets.ipynb](/code/step_02_export_nodes_seattle_streets.ipynb)
 * [step_03_find_discontinuities.ipynb](/code/step_03_find_discontinuities.ipynb)
 * [step_04_prepare_graphs_and_states.ipynb](/code/step_04_prepare_graphs_and_states.ipynb)
 * [step_05_drawn_an_nx_graph.ipynb](/code/step_05_drawn_an_nx_graph.ipynb)
 
-In `step 01`, the downloaded street network data is loaded as GeoPandas GeoDataFrame and I perform some moderate data clean up. `Step 02` features additional data pre-processing and the creation of the city sections as seen in the figure above. After removing certain types of roads and roads within the City of Seattle, the count of segments decreases from ~34K to ~27K across 2,497 unique roads. In this case, a unique road includes both the road name, the road type, and direction prefix or suffix. In this case, `W GALER ST != GALER ST != E GALER ST`. `Step 03` features the identification of disconnected streets and the creation of segments joining the disconnected streets. These data are saved to a geopackage. In `step 04`, I conduct a series of analyses to better understand the distribution of created streets. In particular, I create a histogram of the added segements. Most missing segments are short: the average added segment length is a little less than a quarter of a mile. `Step 05` is a utility file that shows how to create a simple plot of the networkx graph.
+In `step 01`, the downloaded street network data is loaded as a GeoPandas GeoDataFrame and I perform some moderate data clean up. `Step 02` features additional data pre-processing and the creation of the city sections as seen in the figure above. After removing certain types of roads and roads within the City of Seattle, the count of segments decreases from ~34K to ~27K across 2,497 unique roads. In this case, a unique road includes both the road name, the road type, and direction prefix or suffix: `W GALER ST != GALER ST != E GALER ST`. `Step 03` features the identification of disconnected streets and the creation of segments joining the disconnected streets. These data are saved to a geopackage. In `step 04`, I conduct a series of analyses to better understand the distribution of created streets. In particular, I create a histogram of the added segements. Most missing segments are short: the average added segment length is a little less than a quarter of a mile. `Step 05` is a utility file that shows how to create a simple plot of the networkx graph. Also of interest is the [qGIS map](./maps/seattle_streets.qgz) showcasing many aspects of the missing streets. This map is fully symbolized and after running all of the notebooks, the layers should load appropriately.
 
 ## Facts about the streets added:
 * 2,497 roads in the study area | 1,933 road miles
@@ -61,6 +61,20 @@ This figure features a number of descriptive statistics showcasing the distribut
 # File Tree and File Description
  
 ├── README.md - This file  
+├── code  
+│   ├── run_constants.py - file paths used throughout the notebooks.
+│   ├── step_01_import_export_street_data.ipynb - import data and perform minimal formatting.  
+│   ├── step_02_export_nodes_seattle_streets.ipynb - curate the set of working streets, create the city sections.  
+│   ├── step_03_find_discontinuities.ipynb - use NetworkX to identify discontinuities and create the missing segments.  
+│   ├── step_04_prepare_graphs_and_states.ipynb - conduct analyses on the missing segments.
+│   ├── step_05_drawn_an_nx_graph.ipynb - plot a NetworkX graph object of Galer. The plot changes everytime the code is run. 
+│   ├── streets_to_remove.txt - a list (nine, as of 2024/12/25) of short  segments from the original data that can be removed. These are most likely erronneous data artifacts inadvertently left in during data. These were discovered by panning around an instance of qGIS visually identifying oddities. I have no doubt there are more to discover. In step 2, this file can be loaded and used to remove the erroneous segments.
+│   └── utils.py - functions used throughout the notebooks
+├── data
+│   ├── Seattle_City_Limits_3136622578314448116.gpkg - Seattle City Limits downloaded from the City of Seattle. Only used in the qGIS map.
+│   ├── Street_Network_Database_SND_5117857036965774451.gpkg - Stree Network downloaded from the City of Seattle. This is the starting file.
+|   ├── Street_Network_Database_Seattle_Central_Streets.csv - A list of Street IDs curated using qGIS. Included for use in Step 02.
+│   └── blank_street_type_modified.xlsx - Roads with a manually created classification.
 ├── graphics 
 │   ├── AVE_dist_histogram.png - histograms for roads of type: Avenue  
 │   ├── BLVD_dist_histogram.png - histograms for roads of type: Boulevard  
@@ -73,27 +87,13 @@ This figure features a number of descriptive statistics showcasing the distribut
 │   ├── ST_dist_histogram.png - histograms for roads of type: Street  
 │   ├── WAY_dist_histogram.png - histograms for roads of type: Way  
 │   ├── _all_streets_dist_histogram.png - histograms for all roads  
-│   └── seattle_sections.png - maps of the sections in the City of Seattle  
-├── code  
-│   ├── step_01_import_export_street_data.ipynb - import data and perform minimal formatting.  
-│   ├── step_02_export_nodes_seattle_streets.ipynb - curate the set of working streets, create the city sections.  
-│   ├── step_03_find_discontinuities.ipynb - use NetworkX to identify discontinuities and create the missing segments.  
-│   ├── step_04_prepare_graphs_and_states.ipynb - conduct analyses on the missing segments.
-│   ├── step_05_drawn_an_nx_graph.ipynb  - plot a NetworkX graph object of Galer. The plot changes everytime the code is run. 
-│   ├── streets_to_remove.txt - a list (nine, as of 2024/12/25) of short  segments from the original data that can be removed. These are most likely erronneous data artifacts inadvertently left in. These were discovered by panning around an instance of qGIS visually identifying oddities. I have no doubt there are more to discover.
-│   └── utils.py  
-├── data  
-│   ├── Seattle_City_Limits_3136622578314448116.gpkg  
-│   ├── Street_Network_Database_SND_5117857036965774451.gpkg  
-│   ├── Street_Network_Database_Seattle_Central_Streets.csv  
-│   └── blank_street_type_modified.xlsx  
-├── dir_tree.txt  
+│   └── __seattle_sections.png - maps of the sections in the City of Seattle  
 ├── maps  
-│   └── seattle_streets.qgz  
-├── seattles_disconnected_streets_2024_11_20.pptx  
-└── test_map.html  
+│   └── seattle_streets.qgz  - qGIS map showcasing different aspects of the street type. After running all notebooks, this layer should load.
+├── seattles_disconnected_streets_2024_11_20.pptx  - Presentation I gave to the [CUGOS](https://cugos.org/) group on November 20, 2024 showcasing the findings of this project and the next steps.
+└── test_map.html - Initial attempt at creating a web map. 
   
-4 directories, 28 files
+4 directories, 31 files
 
 
 
