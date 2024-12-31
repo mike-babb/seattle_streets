@@ -12,7 +12,6 @@
 │   └── utils.py
 ├── data
 │   ├── Seattle_City_Limits_3136622578314448116.gpkg
-│   ├── Street_Network_Database_Complete.gpkg
 │   ├── Street_Network_Database_SND_5117857036965774451.gpkg
 │   ├── Street_Network_Database_Seattle_Central_Streets.csv
 │   └── blank_street_type_modified.xlsx
@@ -29,10 +28,12 @@
 │   ├── ST_dist_histogram.png
 │   ├── WAY_dist_histogram.png
 │   ├── __seattle_sections.png
-│   └── _all_streets_dist_histogram.png
+│   ├── _all_streets_dist_count.png
+│   ├── _all_streets_dist_histogram.png
+│   └── _all_streets_segment_count.png
 ├── maps
 │   └── seattle_streets.qgz
 ├── seattles_disconnected_streets_2024_11_20.pptx
 └── test_map.html
 
-4 directories, 31 files
+4 directories, 32 files
