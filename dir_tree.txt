@@ -30,10 +30,12 @@
 │   ├── __seattle_sections.png
 │   ├── _all_streets_dist_count.png
 │   ├── _all_streets_dist_histogram.png
-│   └── _all_streets_segment_count.png
+│   ├── _all_streets_segment_count.png
+│   ├── galer.png
+│   └── north_capitol_hill.png
 ├── maps
-│   └── seattle_streets.qgz
-├── seattles_disconnected_streets_2024_11_20.pptx
-└── test_map.html
+│   ├── seattle_streets.qgz
+│   └── test_map.html
+└── seattles_disconnected_streets_2024_11_20.pptx
 
-4 directories, 32 files
+4 directories, 34 files

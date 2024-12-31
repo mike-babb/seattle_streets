@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Map with GeoJSON</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map { height: 500px; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([47.62051382, -122.34930972], 11); // Coordinates for New York City
+
+        // Add base map layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Load GeoJSON file and add it to the map
+        fetch('./testo.geojson')
+            .then(response => response.json())
+            .then(data => {
+                L.geoJSON(data, {
+                    style: { color: "blue", weight: 2, fillOpacity: 0.3 }, // Customize style here
+                    onEachFeature: function (feature, layer) {
+                        if (feature.properties && feature.properties.name) {
+                            layer.bindPopup(feature.properties.name);
+                        }
+                    }
+                }).addTo(map);
+            })
+            .catch(error => console.error("Error loading GeoJSON: ", error));
+    </script>
+</body>
+</html>

@@ -6,9 +6,7 @@
 # Seattle's (disconnected) Street Network
 How many streets in Seattle are disconntinuous? A lot, it turns out. Another way to phrase this question is, "How frequently do roads in Seattle, start, stop, and resume? In Seattle, this typically looks like a road running for a few blocks, terminating, and then resuming a few blocks later. A prime example is Galer Street. Galer street is an east-west street that runs through the neighborhoods of Magnolia, Queen Anne, Capitol Hill, and Madison Park. This street is not continuous. The image below showcases portions of West Galer ST and East Galer ST.
 ![Galer](/graphics/galer.png)  
-The streets colored black are the existing streets with discontinuities. The red lines are the "missing portions" joining the end of one section of street to another. (Note: this color scheme of red and black is used throughout this project in the graphics and maps.)
-
-In addition, Galer is separated into different streets based on city directional section and road type. Accordingly, there are five streets that feature the name "Galer" and three out of those five streets feature a discontinuity. (The number of discontinuities is equal to the number of portions minus one.) The table below summarizes the number of discontinuties in each portion.  
+The streets colored black are the existing streets with discontinuities. The red lines are the "missing portions" joining the end of one section of street to another. (Note: this color scheme of red and black is used throughout this project in the graphics and maps.) In addition, Galer is separated into different streets based on city directional section and road type. Accordingly, there are five streets that feature the name "Galer" and three out of those five streets feature a discontinuity. (The number of discontinuities is equal to the number of portions minus one.) The table below summarizes the number of discontinuties in each portion of the street.  
 
 | Street Name | Portions| Discontinuities|
 |---|----|---|
@@ -18,7 +16,7 @@ In addition, Galer is separated into different streets based on city directional
 |W Galer ST | 5 | 4|
 |W Galer ST Flyover | 1 | 0|
 
-The streets with the name Galer differ based on street prefix and street type. E Galer Street is found in the Eastern Portion of the city and W Galer is found in the wester portion of the city. The suffix 'ST' indicates the road is of type "street" - a navigatable road - while the suffix 'PL' indicates the road is of type "Place", a road with a dead end that is accessible only from a larger street. One of the components driving the disconnected streets is the different sections of the city and when streets transition from one section to another. More on this in the future work section.
+The streets with the name Galer differ based on street prefix and street type. E Galer Street is found in the eastern portion of the city (Capitol Hill) and W Galer is found in the western portion of the city (Magnolia and Queen Anne). The suffix 'ST' indicates the road is of type "street" - a navigatable road - while the suffix 'PL' indicates the road is of type "Place", a road with a dead end that is accessible only from a larger street. One of the components driving the disconnected streets is the different sections of the city and when streets transition from one section to another. More on this in the future work section.
 
 # City Sections
 Seattle is divided into eight sections, basesd on compass directions. The eight sections can be seen in the image below.
@@ -29,9 +27,7 @@ The map on the left features the sections identified by direction prefix or dire
 The data powering this analysis is a single GeoPackage from the City of Seattle:
 https://data-seattlecitygis.opendata.arcgis.com/datasets/783fd63545304bdf9d3c5f2065751614_0/explore
 
-These are the streets in and near the City of Seattle. This dataset appears to be
-updated frequently, so I saved the version I downloaded into the [/data](/data/Street_Network_Database_SND_5117857036965774451.gpkg) folder of this repo. 
-I downloaded a copy of the street network dataset on 2024/11/09 at 5:20 PM.
+These are the streets in and near the City of Seattle. This dataset appears to be updated frequently, so I saved the version I downloaded at 2024/11/09 at 5:20 PM into the [/data](/data/Street_Network_Database_SND_5117857036965774451.gpkg) folder of this repo.  
 
 # The technique
 Finding discontinuities in Seattle streets is spread across three Jupyter notebooks with two notebooks containing additional analyses.
@@ -41,7 +37,18 @@ Finding discontinuities in Seattle streets is spread across three Jupyter notebo
 * [step_04_prepare_graphs_and_states.ipynb](/code/step_04_prepare_graphs_and_states.ipynb)
 * [step_05_drawn_an_nx_graph.ipynb](/code/step_05_drawn_an_nx_graph.ipynb)
 
-In `step 01`, the downloaded street network data is loaded as a GeoPandas GeoDataFrame and I perform some moderate data clean up. `Step 02` features additional data pre-processing and the creation of the city sections as seen in the figure above. After removing certain types of roads and roads within the City of Seattle, the count of segments decreases from ~34K to ~27K across 2,497 unique roads. In this case, a unique road includes both the road name, the road type, and direction prefix or suffix: `W GALER ST != GALER ST != E GALER ST`. `Step 03` features the identification of disconnected streets and the creation of segments joining the disconnected streets. These data are saved to a geopackage. In `step 04`, I conduct a series of analyses to better understand the distribution of created streets. In particular, I create a histogram of the added segements. Most missing segments are short: the average added segment length is a little less than a quarter of a mile. `Step 05` is a utility file that shows how to create a simple plot of the networkx graph. Also of interest is the [qGIS map](./maps/seattle_streets.qgz) showcasing many aspects of the missing streets. This map is fully symbolized and after running all of the notebooks, the layers should load appropriately.
+In `step 01`, the downloaded street network data is loaded as a GeoPandas GeoDataFrame and I perform some moderate data clean up. `Step 02` features additional data pre-processing and the creation of the city sections as seen in the figure above. After removing certain types of roads and roads within the City of Seattle, the count of segments decreases from ~34K to ~27K across 2,497 unique roads. In this case, a unique road includes both the road name, the road type, and direction prefix or suffix: `W GALER ST != GALER ST != E GALER ST`. `Step 03` features the identification of disconnected streets and the creation of segments joining the disconnected streets. These data are saved to a geopackage. In `step 04`, I conduct a series of analyses to better understand the distribution of the missing streets. In particular, I create a histogram of the added segements. Most missing segments are short: the average added segment length is a little less than a quarter of a mile. `Step 05` is a utility file that shows how to create a simple plot of the networkx graph. Also of interest is the [qGIS map](./maps/seattle_streets.qgz) showcasing many aspects of the missing streets. This map is fully symbolized and after running all of the notebooks, the layers should load appropriately. The image below is an overall picture of the addded streets.
+![overall](/graphics/overall.png)
+
+At the scale of the City - and due to the number of added street connections - it's hard to get a sense of the number of added streets. This image below is centered on north Capitol Hill and showcases many street disconnections.
+![North Capitol Hill](/graphics/north_capitol_hill.png)
+This image below is illustrative of many of the reasons for the street disconnections (check out Galer from West to East to get a sense of the  disconnections for understand the disconnections):
+* Seattle’s topography
+* Water features
+* Parks / campuses / large plots of land
+* Seattle’s development from downtown to current day boundaries 
+* Annexation of older cities (differently aligned grids)
+* State routes (520 / HW 99) and I-5
 
 ## Facts about the streets added:
 * 2,497 roads in the study area | 1,933 road miles [(see this graphic for a comparison across road types)](/graphics/_all_streets_dist_count.png)
@@ -95,8 +102,9 @@ This figure features a number of descriptive statistics showcasing the distribut
 │   └── _all_streets_segment_count.png - barplot of the total number of segments by road type and road status.
 ├── maps  
 │   └── seattle_streets.qgz  - qGIS map showcasing different aspects of the street type. After running all notebooks, this layer should load.
-├── seattles_disconnected_streets_2024_11_20.pptx  - Presentation I gave to the [CUGOS](https://cugos.org/) group on November 20, 2024 showcasing the findings of this project and the next steps.
-└── test_map.html - Initial attempt at creating a web map. 
+│   └── test_map.html - Initial attempt at creating a web map. 
+└── seattles_disconnected_streets_2024_11_20.pptx - Presentation I gave to the [CUGOS](https://cugos.org/) group on November 20, 2024 showcasing the findings of this project and the next steps.
+
   
 4 directories, 30 files
 
