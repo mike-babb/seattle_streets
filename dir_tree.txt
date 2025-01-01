@@ -17,22 +17,22 @@
 │   └── blank_street_type_modified.xlsx
 ├── dir_tree.txt
 ├── graphics
-│   ├── AVE_dist_histogram.png
-│   ├── BLVD_dist_histogram.png
-│   ├── CT_dist_histogram.png
-│   ├── DR_dist_histogram.png
-│   ├── LN_dist_histogram.png
-│   ├── PKWY_dist_histogram.png
-│   ├── PL_dist_histogram.png
-│   ├── RD_dist_histogram.png
-│   ├── ST_dist_histogram.png
-│   ├── WAY_dist_histogram.png
-│   ├── __seattle_sections.png
-│   ├── _all_streets_dist_count.png
-│   ├── _all_streets_dist_histogram.png
-│   ├── _all_streets_segment_count.png
-│   ├── galer.png
-│   └── north_capitol_hill.png
+│   ├── barplot_miles.png
+│   ├── barplot_segment_count.png
+│   ├── ex_01_galer.png
+│   ├── ex_02_overall.png
+│   ├── ex_03_north_capitol_hill.png
+│   ├── histogram_AVE.png
+│   ├── histogram_BLVD.png
+│   ├── histogram_CT.png
+│   ├── histogram_DR.png
+│   ├── histogram_LN.png
+│   ├── histogram_PKWY.png
+│   ├── histogram_PL.png
+│   ├── histogram_RD.png
+│   ├── histogram_ST.png
+│   ├── histogram_WAY.png
+│   └── seattle_sections.png
 ├── maps
 │   ├── seattle_streets.qgz
 │   └── test_map.html
