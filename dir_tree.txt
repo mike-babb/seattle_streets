@@ -22,6 +22,8 @@
 │   ├── ex_01_galer.png
 │   ├── ex_02_overall.png
 │   ├── ex_03_north_capitol_hill.png
+│   ├── ex_04_51.png
+│   ├── histogram_ALL_streets.png
 │   ├── histogram_AVE.png
 │   ├── histogram_BLVD.png
 │   ├── histogram_CT.png
@@ -38,4 +40,4 @@
 │   └── test_map.html
 └── seattles_disconnected_streets_2024_11_20.pptx
 
-4 directories, 34 files
+4 directories, 36 files
