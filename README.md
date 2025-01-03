@@ -23,13 +23,13 @@ The streets with the name Galer differ based on street prefix and street type. E
 Seattle is divided into eight sections, basesd on compass directions. The eight sections can be seen in the image below.
 <img src="./graphics/seattle_sections.png" alt="seattle sections" width="1000" height="530"/>  
 
-The map on the left features the sections identified by direction prefix or direction suffix. Roads without a direction prefix or suffix are labeled as "No direction". The majority of roads without a direction prefix or suffix are located in the central business district. Throughout Seattle, streets run east/west and avenues run north/south. In the central business district, both streets and avenues are directionless. North of Denny way, streets are directionless while avenues are not. East of Broadway, streets feature a direction while avenues do not. Note that throughout the city, there are streets without a direction prefix or suffix, but this is limited to specific roads and road types (trails and interstates, for example). The image on the right is the convex hull surrounding each road type (after removing certain roads and types). Before starting this project, I had a general idea about the extents of the city sections. These maps was helpful in diagnosing why some roads were being connected and some where not. (More on this in the future work section.) [Step 01](/code/step_01_import_export_street_data.ipynb) and [step 02](/code/step_02_export_nodes_seattle_streets.ipynb) identify the city sections on the streets and create these data.
+The map on the left features the sections identified by direction prefix or direction suffix. Roads without a direction prefix or suffix are labeled as "No direction". The majority of roads without a direction prefix or suffix are located in the central business district. Throughout Seattle, streets run east/west and avenues run north/south. In the central business district, both streets and avenues are directionless. North of Denny way, streets are directionless while avenues are not. East of Broadway, streets feature a direction while avenues do not. Note that throughout the city, there are streets without a direction prefix or suffix, but this is limited to specific roads and road types (trails and interstates, for example). The image on the right is the convex hull surrounding each directional prefix / suffix (after removing certain roads and types). Before starting this project, I had a general idea about the extents of the city sections. These maps was helpful in diagnosing why some roads were being connected and some where not. [Step 01](/code/step_01_import_export_street_data.ipynb) and [step 02](/code/step_02_export_nodes_seattle_streets.ipynb) identifies the city sections on the streets and creates the convex hulls.
 
 # Data
 The data powering this analysis is a single GeoPackage from the City of Seattle:
 https://data-seattlecitygis.opendata.arcgis.com/datasets/783fd63545304bdf9d3c5f2065751614_0/explore
 
-These are the streets in and near the City of Seattle. This dataset appears to be updated frequently, so I saved the version I downloaded on 2024/11/09 at 5:20 PM into the [data](/data/) folder of this repo.  
+These are the streets in and near the City of Seattle. This dataset appears to be updated frequently, so I saved the version I downloaded on 2024/11/09 at 5:20 PM into the [data](/data/Street_Network_Database_SND_5117857036965774451.gpkg) folder of this repo.  
 
 # The technique
 Finding discontinuities in Seattle streets is accomplished across three Jupyter notebooks with two notebooks containing additional analyses.
@@ -39,19 +39,19 @@ Finding discontinuities in Seattle streets is accomplished across three Jupyter 
 * [step_04_prepare_graphs_and_states.ipynb](/code/step_04_prepare_graphs_and_states.ipynb)
 * [step_05_drawn_an_nx_graph.ipynb](/code/step_05_drawn_an_nx_graph.ipynb)
 
-In `step 01`, the downloaded street network data is loaded as a GeoPandas GeoDataFrame and I perform some moderate data clean up. `Step 02` features additional data pre-processing and the creation of the city sections as seen in the figure above. After removing certain types of roads and roads within the City of Seattle, the count of segments decreases from ~34K to ~27K across 2,497 unique roads. In this case, a unique road includes both the road name, the road type, and direction prefix or suffix: `W GALER ST != GALER ST != E GALER ST`. In `Step 03` I use [GeoPandas](https://geopandas.org/en/stable/getting_started/introduction.html) and [NetworkX](https://networkx.org/) to identify disconnected streets and create segments joining the disconnected streets. These data are saved to a geopackage for further use. There are four NetworkX libraries I use to identify the disconnected streets:
+In `step 01`, the downloaded street network data is loaded as a GeoPandas GeoDataFrame and I perform some moderate data clean up. `Step 02` features additional data pre-processing and the creation of the city sections as seen in the figure above. After removing certain types of roads and roads within the City of Seattle, the count of segments decreases from ~34K to ~27K across 2,497 unique roads. In this case, a unique road includes both the road name, the road type, and direction prefix or suffix. Under this schema, W GALER ST is not the same as GALER ST which is not the same as E GALER ST. In `Step 03` I use [GeoPandas](https://geopandas.org/en/stable/getting_started/introduction.html) and [NetworkX](https://networkx.org/) to identify disconnected streets and create segments joining the disconnected streets. There are four NetworkX libraries I use to identify the disconnected streets:
 * [nx.from_pandas_edgelist()](https://networkx.org/documentation/stable/reference/generated/networkx.convert_matrix.from_pandas_edgelist.html) to create an undirected graph (nodes are intersections, edges are roads)
 * [nx.connected_components()](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.components.connected_components.html) to identify discontinuities in the graph (disconnected roads)
 * [nx.non_edges()](https://networkx.org/documentation/stable/reference/generated/networkx.classes.function.non_edges.html) to compute the set of possible “missing edges” (many possible ways to connect disconnected street ends)
 * [nx.k_edge_augmentation()](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.connectivity.edge_augmentation.k_edge_augmentation.html) to find the optimal missing edge (the path between disconnected street ends guaranteeing full graph traversal)
 
-I then use various [shapely](https://shapely.readthedocs.io/en/stable/manual.html) objects to build the missing street sections as geospatial data. Using GeoPandas I can collect and store these data. In `step 04`, I conduct a series of analyses to better understand the distribution of the missing streets. I write out several worksheets to an Excel workbook in order to get a sense of the types of streets in Seattle. In particular, I create a histogram of the added segements. Most missing segments are short: the average added segment length is a little less than a quarter of a mile. `Step 05` is a utility file that shows how to create a simple plot of the Galer ST NetworkX graph. Throughout this project I used this [qGIS map](./maps/seattle_streets.qgz) file to showcasing many aspects of the missing streets. This map is fully symbolized and after running all of the notebooks, the layers should load appropriately. The image below is an overall picture of the addded streets.  
+I then use various [shapely](https://shapely.readthedocs.io/en/stable/manual.html) objects to build the missing street sections as geospatial data and GeoPandas to collect and store these data. In `step 04`, I conduct a series of analyses to better understand the distribution of the missing streets. I write out several worksheets to an Excel workbook in order to get a sense of the types of streets in Seattle. In particular, I create a histogram of the added segements. Most missing segments are short: the average added segment length is a little less than a quarter of a mile. `Step 05` is a utility file that shows how to create a simple plot of W Galer ST as a NetworkX graph. Throughout this project I used this [qGIS map](./maps/seattle_streets.qgz) file to showcase many aspects of the missing streets. This map is fully symbolized and after running all of the notebooks, the layers should load appropriately. The image below is an overall picture of the addded streets. Again, the red lines are the added streets joining disconnected segements and the black lines are the existing streets.    
 <img src="./graphics/ex_02_overall.png" alt="overall" width="500" height="565"/>
 
-At the scale of the City - and due to the number of added street connections - it's hard to get a sense of the number of added streets. This image below is centered on north Capitol Hill and showcases many street discontinuities.
+At the scale of the city - and due to the number of added street connections - it's hard to get a sense of the number of added streets. This image below is centered on north Capitol Hill and showcases many street discontinuities (check out Galer from West to East, in particular).
 <img src="./graphics/ex_03_north_capitol_hill.png" alt="North Capitol Hill" width="500" height="267"/>
 
-This image below is illustrative of many of the reasons for the street discontinuties (check out Galer from West to East, in particular):
+This image below is illustrative of many of the reasons for the discontinuties in Seattle:  
 * Seattle’s topography
 * Water features
 * Parks / campuses / large plots of land
@@ -67,14 +67,13 @@ This image below is illustrative of many of the reasons for the street discontin
 * Average of ~3.2 segments per uniquely named road
 * Average segment length: ~0.23 Miles
 * Median segment length: ~443 Feet
-* Greatest number of segments added: 14
-* (1ST AVE NW, 30TH AVE S, 35TH AVE S, W RAYE ST)
+* Greatest number of segments added: 14 (1ST AVE NW, 30TH AVE S, 35TH AVE S, W RAYE ST)
 * Longest segment: ~5 Miles:  7Th PL S 
 * Shortest segment: ~4 Feet: SW Cloverdale ST
 
 Below is a histogram of the added streets:
 ![histogram of added streets](/graphics/histogram_ALL_streets.png)
-This figure features a number of descriptive statistics showcasing the distribution of the length of the added segments. In general, most of the added segments are rather short. `Step 04` creates this histogram and creates histograms for each street type and additional summary graphics.
+This figure features a number of descriptive statistics showcasing the distribution of the length of the added segments. In general, most of the added segments are rather short, less than a quarter of a mile. `Step 04` creates this histogram and histograms for each street type and additional summary graphics.
 
 # File Tree and File Description 
 ├── README.md - This file  
