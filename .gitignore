@@ -48,6 +48,7 @@ Untitled*.ipynb
 untitled*.ipynb
 test_python.ipynb
 dir_tree.txt
+test_folium.ipynb
 
 # machine specific configuation files
 .vscode/launch.json
