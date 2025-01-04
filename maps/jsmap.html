@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Seattle's disconnected streets</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        #map {
+            width: 100%;
+            height: 600px;
+        }
+    </style>
+</head>
+
+<body>
+     <h1>Seattle's disconneWebmap with GeoJSON Layers</h1>
+    <div id="map"></div>
+
+    <script>
+        // Initialize the map
+        const map = L.map('map').setView([47.59945, -122.32214], 16);
+
+        // Add a base map layer
+        const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        // GeoJSON file URLs
+        var geojsonFiles = {
+            "missing street": "missing_street.geojson",
+            "disconnected street": "disconnected_street.geojson",
+            "complete street": "complete_street.geojson"
+        };
+
+        // Overlay layers container
+        var overlayLayers = {};
+
+        // geojson layer
+        var geojsonLayer;
+
+        var lastClickedLayer = null; // Store reference to the last clicked feature
+        var lastClickedLayerName = null; // Store reference to the last clicked feature
+
+        var styles = {
+            "missing street": {
+                color: "#ca0020", //red
+                weight: 6,
+                fillOpacity: 0.4
+            },
+            "disconnected street": {
+                color: "#000000", //black
+                weight: 5,
+                fillOpacity: 0.4
+            },
+            "complete street": {
+                color: "#33a02c", //green
+                weight: 5,
+                fillOpacity: 0.4
+            }
+        };
+
+        // Function to create a popup for each feature
+        function onEachFeature(feature, layer, layerName) {
+            if (feature.properties) {
+                // Customize the popup content using properties
+                var seg_length_miles = feature.properties.dist_miles;
+                var seg_length_feet = feature.properties.dist;
+
+                // Conditional rounding
+                var formattedNumber = seg_length_miles >= .25
+                    ? seg_length_miles.toFixed(2)
+                    : Math.round(seg_length_feet);
+
+                var popupContent = seg_length_miles >= .25
+                    ? `<strong>${feature.properties.ord_stname_concat || "Street Name"}</strong><br>` +
+                    `${formattedNumber || "miles"} miles`
+                    : `<strong>${feature.properties.ord_stname_concat || "Street Name"}</strong><br>` +
+                    `${formattedNumber || "feet"} feet`
+                    ;
+                layer.bindPopup(popupContent);
+
+                // Highlight the feature on click
+                layer.on('click', function (e) {
+                    // Reset the style of the previously clicked feature, if any
+                    if (lastClickedLayer) {
+                        layerName == 'missing steet' ?
+                            lastClickedLayer.setStyle({
+                                color: "#ca0020", //red
+                                weight: 6,
+                                fillOpacity: 0.4
+                            }) :
+                            layerlastClickedLayer.setStyle({
+                                color: "#33a02c", //green
+                                weight: 5,
+                                fillOpacity: 0.4
+                            });
+                    }
+                    // Highlight the clicked feature
+                    layer.setStyle({
+                        color: 'yellow', // Highlight color
+                        weight: 5,
+                        opacity: 0.7
+                    });
+
+                    // Store reference to the clicked feature
+                    lastClickedLayer = layer;
+                });
+
+
+            }
+        }
+
+        // Load each GeoJSON file and add it as a layer
+        Object.keys(geojsonFiles).forEach(function (layerName) {
+            fetch(geojsonFiles[layerName])
+                .then(response => response.json())
+                .then(data => {
+
+
+
+                    // Create a GeoJSON layer
+                    geojsonLayer = L.geoJSON(data, {
+                        style: styles[layerName],
+                        onEachFeature: onEachFeature
+                    });
+
+                    // Add layer to overlay controls
+                    overlayLayers[layerName] = geojsonLayer;
+
+                    // Add layer to map by default (optional)
+                    map.addLayer(geojsonLayer);
+                    // Add layer control dynamically
+                    if (!map.layerControl) {
+                        map.layerControl = L.control.layers(null, overlayLayers).addTo(map);
+                    } else {
+                        map.layerControl.addOverlay(geojsonLayer, layerName);
+                    }
+                });
+        });
+    </script>
+</body>
+
+</html>

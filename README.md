@@ -36,7 +36,7 @@ Finding discontinuities in Seattle streets is accomplished across three Jupyter 
 * [step_01_import_export_street_data.ipynb](/code/step_01_import_export_street_data.ipynb)
 * [step_02_export_nodes_seattle_streets.ipynb](/code/step_02_export_nodes_seattle_streets.ipynb)
 * [step_03_find_discontinuities.ipynb](/code/step_03_find_discontinuities.ipynb)
-* [step_04_prepare_graphs_and_states.ipynb](/code/step_04_prepare_graphs_and_states.ipynb)
+* [step_04_prepare_graphs_and_stats.ipynb](/code/step_04_prepare_graphs_and_stats.ipynb)
 * [step_05_drawn_an_nx_graph.ipynb](/code/step_05_drawn_an_nx_graph.ipynb)
 
 In `step 01`, the downloaded street network data is loaded as a GeoPandas GeoDataFrame and I perform some moderate data clean up. `Step 02` features additional data pre-processing and the creation of the city sections as seen in the figure above. After removing certain types of roads and roads within the City of Seattle, the count of segments decreases from ~34K to ~27K across 2,497 unique roads. In this case, a unique road includes both the road name, the road type, and direction prefix or suffix. Under this schema, W GALER ST is not the same as GALER ST which is not the same as E GALER ST. In `Step 03` I use [GeoPandas](https://geopandas.org/en/stable/getting_started/introduction.html) and [NetworkX](https://networkx.org/) to identify disconnected streets and create segments joining the disconnected streets. There are four NetworkX libraries I use to identify the disconnected streets:
@@ -82,7 +82,7 @@ This figure features a number of descriptive statistics showcasing the distribut
 │   ├── step_01_import_export_street_data.ipynb - import data and perform minimal formatting.  
 │   ├── step_02_export_nodes_seattle_streets.ipynb - curate the set of working streets, create the city sections.  
 │   ├── step_03_find_discontinuities.ipynb - use NetworkX to identify discontinuities and create the missing segments.  
-│   ├── step_04_prepare_graphs_and_states.ipynb - conduct analyses on the missing segments.  
+│   ├── step_04_prepare_graphs_and_stats.ipynb - conduct analyses on the missing segments.  
 │   ├── step_05_drawn_an_nx_graph.ipynb - plot a NetworkX graph object of Galer. The plot changes everytime the code is run.  
 │   ├── streets_to_remove.txt - a list (nine, as of 2024/12/25) of short segments from the original data that can be removed. These are most likely erronneous data artifacts inadvertently left in during data processing by the City of Seattle. These were discovered by panning around a qGIS map visually identifying oddities. I have no doubt there are more to discover. In step 2, this file can be loaded and used to remove the erroneous segments.  
 │   └── utils.py - functions used throughout the notebooks.  
@@ -124,6 +124,8 @@ Making v1.0 of this repo publically availably was my first goal. My next two goa
 
 There are five streets named 51st: NE 51st ST, 51st AVE NE, 51st AVE SW, and 51st AVE S, and 51st PL S. Should 51st AVE S and 51st AVE NE be connected? Perhaps! Upon visual inspection, they align to a quasi-grid. But then, so do most of the streets in Seattle. Version 2.0 will feature connections between streets that should mostly likely be connected. For example, W GALER ST will connect to GALER ST which will connect to E GALER ST. The best way to accomplish this is to use a combination programmatic identification and manual review to create the combination. With approximately 2.5K uniquely named roads, that's a few hours work to identify logical groupings using python and then review for consistency.
 
+# now, let's try loading  map
 
+<iframe src="maps/jsmap_v2.html" width="100%" height="500"></iframe>
 
 
