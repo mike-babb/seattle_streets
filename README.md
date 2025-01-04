@@ -7,6 +7,9 @@
 How many streets in Seattle are disconntinuous? Or, "How frequently do roads in Seattle, start, stop, and resume?" This typically looks like a road running for a few blocks, terminating, and then resuming a few blocks later. A prime example is Galer Street. Galer street is an east-west street that runs through the neighborhoods of Magnolia, Queen Anne, Capitol Hill, and Madison Park.  
 <img src="./graphics/ex_01_galer.png" alt="galer" width="1000" height="130"/>
 
+[SEE THIS PAGE FOR AN INTERACTIVE MAP OF THE ADDED STREETS](./maps/jsmap_v2.html)
+
+
 The streets colored black are the existing streets with discontinuities. The red lines are the "missing portions" joining the end of one section of street to another. (Note: this color scheme of red and black is used throughout this project in the graphics and maps.) Galer is also separated into different streets based on city directional section and road type. Accordingly, there are five streets that feature the name "Galer" and three out of those five streets feature a discontinuity. (The number of discontinuities is equal to the number of portions minus one.) The table below summarizes the number of discontinuties in each portion of the street.  
 
 | Street Name | Portions| Discontinuities|
@@ -48,7 +51,7 @@ In `step 01`, the downloaded street network data is loaded as a GeoPandas GeoDat
 I then use various [shapely](https://shapely.readthedocs.io/en/stable/manual.html) objects to build the missing street sections as geospatial data and GeoPandas to collect and store these data. In `step 04`, I conduct a series of analyses to better understand the distribution of the missing streets. I write out several worksheets to an Excel workbook in order to get a sense of the types of streets in Seattle. In particular, I create a histogram of the added segements. Most missing segments are short: the average added segment length is a little less than a quarter of a mile. `Step 05` is a utility file that shows how to create a simple plot of W Galer ST as a NetworkX graph. Throughout this project I used this [qGIS map](./maps/seattle_streets.qgz) file to showcase many aspects of the missing streets. This map is fully symbolized and after running all of the notebooks, the layers should load appropriately. The image below is an overall picture of the addded streets. Again, the red lines are the added streets joining disconnected segements and the black lines are the existing streets.    
 <img src="./graphics/ex_02_overall.png" alt="overall" width="500" height="565"/>
 
-At the scale of the city - and due to the number of added street connections - it's hard to get a sense of the number of added streets. This image below is centered on north Capitol Hill and showcases many street discontinuities (check out Galer from West to East, in particular).
+At the scale of the city - and due to the number of added street connections - it's hard to get a sense of the number of added streets. This image below is centered on north Capitol Hill and showcases many street discontinuities (check out Galer from West to East, in particular).  
 <img src="./graphics/ex_03_north_capitol_hill.png" alt="North Capitol Hill" width="500" height="267"/>
 
 This image below is illustrative of many of the reasons for the discontinuties in Seattle:  
@@ -124,8 +127,195 @@ Making v1.0 of this repo publically availably was my first goal. My next two goa
 
 There are five streets named 51st: NE 51st ST, 51st AVE NE, 51st AVE SW, and 51st AVE S, and 51st PL S. Should 51st AVE S and 51st AVE NE be connected? Perhaps! Upon visual inspection, they align to a quasi-grid. But then, so do most of the streets in Seattle. Version 2.0 will feature connections between streets that should mostly likely be connected. For example, W GALER ST will connect to GALER ST which will connect to E GALER ST. The best way to accomplish this is to use a combination programmatic identification and manual review to create the combination. With approximately 2.5K uniquely named roads, that's a few hours work to identify logical groupings using python and then review for consistency.
 
-# now, let's try loading  map
+# now, let's try loading a map...
+<div>
+  <!DOCTYPE html>
+<html lang="en">
 
-<iframe src="maps/jsmap_v2.html" width="100%" height="500"></iframe>
+<head>
+    <title>Seattle's disconnected streets</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .leaflet-container {
+            height: 400px;
+            width: 600px;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+
+
+    <style>
+        #map {
+            width: 90%;
+            height: 90%;
+        }
+
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            border-radius: 5px;
+        }
+
+        .info h4 {
+            margin: 0 0 5px;
+            color: #777;
+        }
+
+        .legend {
+            text-align: left;
+            line-height: 18px;
+            color: #555;
+        }
+
+        .legend i {
+            width: 18px;
+            height: 5px;
+            float: left;
+            margin-right: 8px;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <div id="map"></div>
+
+    <script type="text/javascript" src="all_streets_test.geojson"></script>
+
+    <script>
+        // Initialize the map
+        const map = L.map('map').setView([47.59945, -122.32214], 16);
+
+        // Add a base map layer
+        const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        // control that shows state info on hover
+        const info = L.control();
+
+        info.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+
+        info.update = function (props) {
+            
+            // Customize the popup content using properties
+            var seg_length_miles = props ? props.dist_miles : 0;
+            var seg_length_feet = props ? props.dist: 0;
+
+            // // Conditional rounding
+            var formattedNumber = seg_length_miles >= .25
+                 ? seg_length_miles.toFixed(2)
+                 : Math.round(seg_length_feet);
+
+             var popupContent = seg_length_miles >= .25
+                 ? `${formattedNumber || "miles"} miles`
+                 : `${formattedNumber || "feet"} feet`
+                 ;
+
+            const contents = props ? `<b>${props.ord_stname_concat}</b><br />${popupContent}` : 'Hover over a segment';
+            this._div.innerHTML = `<h4>Street Information</h4>${contents}`;
+        };
+
+        info.addTo(map);
+
+        // get color depending on street type
+        function getColor(st) {
+            return st == 0 ? "#33a02c" :
+                st == 1 ? "#000000" : "#ca0020";
+        }
+
+        function style(feature) {
+            return {
+                weight: 7,
+                opacity: .8,
+                color: getColor(feature.properties.street_status)
+            };
+        }
+
+        function highlightFeature(e) {
+            const layer = e.target;
+
+            layer.setStyle({
+                weight: 9,
+                color: 'yellow',
+                dashArray: '',
+                fillOpacity: 0.7
+            });
+
+            layer.bringToFront();
+
+            info.update(layer.feature.properties);
+        }
+
+        /* global statesData */
+        const all_geojson = L.geoJson(all_streets, {
+            style,
+            onEachFeature
+        }).addTo(map);
+
+        function resetHighlight(e) {
+            all_geojson.resetStyle(e.target);
+            info.update();
+        }
+
+        function zoomToFeature(e) {
+            map.fitBounds(e.target.getBounds());
+        }
+
+        function onEachFeature(feature, layer) {
+            layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight,
+                click: zoomToFeature
+            });
+        }
+        const legend = L.control({ position: 'bottomright' });
+
+        legend.onAdd = function (map) {
+
+            const div = L.DomUtil.create('div', 'info legend');
+            const grades = ['Complete Street', 'Disconnected Street', 'Missing Street'];
+            const labels = [];
+            let from, to;
+
+            for (let i = 0; i < grades.length; i++) {
+                from = grades[i];
+
+                labels.push(`<i style="background:${getColor(i)}"></i> ${from}`);
+            }
+
+            div.innerHTML = labels.join('<br>');
+            return div;
+        };
+
+        legend.addTo(map);
+
+
+    </script>
+</body>
+
+</html>
+
+</div>
+
 
 
