@@ -9,7 +9,6 @@ How many streets in Seattle are disconntinuous? Or, "How frequently do roads in 
 
 [SEE THIS PAGE FOR AN INTERACTIVE MAP OF THE ADDED STREETS](./maps/jsmap_v2.html)
 
-
 The streets colored black are the existing streets with discontinuities. The red lines are the "missing portions" joining the end of one section of street to another. (Note: this color scheme of red and black is used throughout this project in the graphics and maps.) Galer is also separated into different streets based on city directional section and road type. Accordingly, there are five streets that feature the name "Galer" and three out of those five streets feature a discontinuity. (The number of discontinuities is equal to the number of portions minus one.) The table below summarizes the number of discontinuties in each portion of the street.  
 
 | Street Name | Portions| Discontinuities|
