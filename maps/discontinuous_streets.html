@@ -60,7 +60,7 @@
 </head>
 
 <body>
-    
+
     <div id="map"></div>
 
     <script type="text/javascript" src="all_streets_diss.geojson"></script>
@@ -78,6 +78,7 @@
         // control that shows state info on hover
         const info = L.control();
 
+
         info.onAdd = function (map) {
             this._div = L.DomUtil.create('div', 'info');
             this.update();
@@ -85,31 +86,44 @@
         };
 
         info.update = function (props) {
-            
+
             // Customize the popup content using properties
             var seg_length_miles = props ? props.dist_miles : 0;
-            var seg_length_feet = props ? props.dist: 0;
 
             // // Conditional rounding
             var formattedNumber = seg_length_miles >= .25
-                 ? seg_length_miles.toFixed(2)
-                 : Math.round(seg_length_feet);
+                ? seg_length_miles.toFixed(2)
+                : Math.round((seg_length_miles * 5280))
+                ;
 
-             var popupContent = seg_length_miles >= .25
-                 ? `${formattedNumber || "miles"} miles`
-                 : `${formattedNumber || "feet"} feet`
-                 ;
+            var popupContent = seg_length_miles >= .25
+                ? `${formattedNumber || "miles"} miles`
+                : `${formattedNumber || "feet"} feet`
+                ;
 
-            const contents = props ? `<b>${props.ord_stname_concat}</b><br />${popupContent}` : 'Hover over a segment';
+            var streetStatusDesc = props ? getStreetTypeDescription(props.street_status) : "";
+
+            const contents = props ?
+                `<b>${streetStatusDesc}</b><br />
+                <b>${props.ord_stname_concat}</b><br />
+                ${popupContent}` : 'Hover over a segment';
             this._div.innerHTML = `<h4>Street Information</h4>${contents}`;
         };
 
         info.addTo(map);
 
-        // get color depending on street type
+        // get color depending on street status
         function getColor(st) {
             return st == 0 ? "#33a02c" :
-                st == 1 ? "#000000" : "#ca0020";
+                st == 1 ? "#000000" :
+                    "#ca0020";
+        }
+
+        // get street type description
+        function getStreetTypeDescription(st) {
+            return st == 0 ? `<span style="color: #33a02c">CONTINUOUS STREET</span>` :
+                st == 1 ?    `<span style="color: #000000">DISCONTINUOUS STREET</span>` :
+                             `<span style="color: #ca0020">ADDED STREET</span>`;
         }
 
         function style(feature) {
@@ -136,7 +150,7 @@
         }
 
         /* global statesData */
-        const all_geojson = L.geoJson(all_streets, {
+        const all_geojson = L.geoJson(all_streets_diss, {
             style,
             onEachFeature
         }).addTo(map);
@@ -162,7 +176,7 @@
         legend.onAdd = function (map) {
 
             const div = L.DomUtil.create('div', 'info legend');
-            const grades = ['Complete Street', 'Disconnected Street', 'Missing Street'];
+            const grades = ['Continuous Street', 'Discontinuous Street', 'Added Street'];
             const labels = [];
             let from, to;
 
