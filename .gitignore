@@ -1,6 +1,7 @@
 # Don't track content of these folders
 ############################################
 .ipynb_checkpoints
+.virtual_documents
 __pycache__
 .idea
 .vscode
@@ -48,6 +49,10 @@ Untitled*.ipynb
 untitled*.ipynb
 test_python.ipynb
 dir_tree.txt
+todo_notes.md
+todo.md
+notes.md
+
 
 # machine specific configuation files
 .vscode/launch.json
