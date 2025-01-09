@@ -69,7 +69,7 @@
         // Initialize the map
         const map = L.map('map').setView([47.6348, -122.3347], 11);
 
-        // Add a base map layer from openstreetmap
+        // Add a base map layer
         const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -86,20 +86,20 @@
         };
 
         info.update = function (props) {
+
             // Customize the popup content using properties
             var seg_length_miles = props ? props.dist_miles : 0;
 
-            // Conditional rounding for the length measurements
+            // // Conditional rounding
             var formattedNumber = seg_length_miles >= .25
                 ? seg_length_miles.toFixed(2)
                 : Math.round((seg_length_miles * 5280))
                 ;
-            // specify miles if greater than 0.20 miles, use feet otherwise
-            var popupContent = seg_length_miles >= .20
+
+            var popupContent = seg_length_miles >= .25
                 ? `${formattedNumber || "miles"} miles`
                 : `${formattedNumber || "feet"} feet`
                 ;
-
 
             var streetStatusDesc = props ? getStreetTypeDescription(props.street_status) : "";
 
@@ -114,9 +114,6 @@
 
         // get color depending on street status
         function getColor(st) {
-            // "#33a02c": green
-            // "#000000": black
-            // "#ca0020": red
             return st == 0 ? "#33a02c" :
                 st == 1 ? "#000000" :
                     "#ca0020";
@@ -125,8 +122,8 @@
         // get street type description
         function getStreetTypeDescription(st) {
             return st == 0 ? `<span style="color: #33a02c">CONTINUOUS STREET</span>` :
-                st == 1 ? `<span style="color: #000000">DISCONTINUOUS STREET</span>` :
-                    `<span style="color: #ca0020">ADDED STREET</span>`;
+                st == 1 ?    `<span style="color: #000000">DISCONTINUOUS STREET</span>` :
+                             `<span style="color: #ca0020">ADDED STREET</span>`;
         }
 
         function style(feature) {
@@ -140,19 +137,11 @@
         function highlightFeature(e) {
             const layer = e.target;
 
-            all_geojson.eachLayer(function (layer) {
-                layer.setStyle({
-                    fillOpacity: 0.25, // Default transparency for unselected features
-                    opacity: 0.25      // Line transparency
-                });
-            });
-
             layer.setStyle({
                 weight: 9,
                 color: 'yellow',
                 dashArray: '',
-                fillOpacity: 1,
-                opacity:1
+                fillOpacity: 0.7
             });
 
             layer.bringToFront();
@@ -167,43 +156,19 @@
         }).addTo(map);
 
         function resetHighlight(e) {
-            all_geojson.eachLayer(function (layer) {
-                layer.setStyle({
-                    fillOpacity: 0.8, // Default transparency for unselected features
-                    opacity: 0.8      // Line transparency
-                });
-            });
-
             all_geojson.resetStyle(e.target);
-
             info.update();
         }
 
-        // not used for now
         function zoomToFeature(e) {
             map.fitBounds(e.target.getBounds());
-        }
-
-        function changeHighlite(e) {
-            all_geojson.eachLayer(function (layer) {
-                layer.setStyle({
-                    fillOpacity: 0.25, // Default transparency for unselected features
-                    opacity: 0.25      // Line transparency
-                });
-            });
-
-            // Highlight the clicked feature
-            layer.setStyle({
-                fillOpacity: 1.0, // Fully opaque for the clicked feature
-                opacity: 1.0
-            });
         }
 
         function onEachFeature(feature, layer) {
             layer.on({
                 mouseover: highlightFeature,
-                mouseout: resetHighlight
-
+                mouseout: resetHighlight,
+                click: zoomToFeature
             });
         }
         const legend = L.control({ position: 'bottomright' });
