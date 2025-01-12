@@ -21,10 +21,9 @@
         }
     </style>
 
-
     <style>
         #map {
-            width: 90%;
+            width: 99%;
             height: 90%;
         }
 
@@ -78,37 +77,28 @@
         // control that shows state info on hover
         const info = L.control();
 
-
         info.onAdd = function (map) {
             this._div = L.DomUtil.create('div', 'info');
             this.update();
             return this._div;
         };
 
+        // function that updates the box with information about the roads
         info.update = function (props) {
-            // Customize the popup content using properties
-            var seg_length_miles = props ? props.dist_miles : 0;
-
-            // Conditional rounding for the length measurements
-            var formattedNumber = seg_length_miles >= .25
-                ? seg_length_miles.toFixed(2)
-                : Math.round((seg_length_miles * 5280))
-                ;
-            // specify miles if greater than 0.20 miles, use feet otherwise
-            var popupContent = seg_length_miles >= .20
-                ? `${formattedNumber || "miles"} miles`
-                : `${formattedNumber || "feet"} feet`
-                ;
-
-
-            var streetStatusDesc = props ? getStreetTypeDescription(props.street_status) : "";
-
-            const contents = props ?
-                `<b>${streetStatusDesc}</b><br />
-                <b>${props.ord_stname_concat}</b><br />
-                ${popupContent}` : 'Hover over a segment';
-            this._div.innerHTML = `<h4>Street Information</h4>${contents}`;
+            if (props) {
+                this._div.innerHTML = `
+            <h4>Street Information</h4>
+            <b><u>${props.ord_stname_concat}</u></b><br />
+            <b>Total Length:</b> ${props.totalLength.toFixed(2)} miles<br />
+            <b><span style="color: #33a02c">Continuous:</span></b> ${props.continuousLength.toFixed(2)} miles<br />
+            <b>Discontinuous:</b> ${props.discontinuousLength.toFixed(2)} miles<br />
+            <b><span style="color: #ca0020">Added:</span></b> ${props.addedLength.toFixed(2)} miles
+        `;
+            } else {
+                this._div.innerHTML = '<h4>Street Information</h4>Hover over a segment';
+            }
         };
+
 
         info.addTo(map);
 
@@ -129,6 +119,7 @@
                     `<span style="color: #ca0020">ADDED STREET</span>`;
         }
 
+        // styles a feature - a line segment - based on street_status
         function style(feature) {
             return {
                 weight: 7,
@@ -137,46 +128,81 @@
             };
         }
 
+        // define what happens when a feature is a highlighted during a mouseover event        
         function highlightFeature(e) {
-            const layer = e.target;
+            const layer = e.target; // Get the hovered feature
+            const selectedName = layer.feature.properties.ord_stname_concat; // Get the street name
 
-            all_geojson.eachLayer(function (layer) {
-                layer.setStyle({
-                    fillOpacity: 0.25, // Default transparency for unselected features
-                    opacity: 0.25      // Line transparency
-                });
+            // Initialize lengths
+            let totalLength = 0;
+            let continuousLength = 0;
+            let discontinuousLength = 0;
+            let addedLength = 0;
+
+            // Loop through all segments to calculate lengths
+            all_geojson.eachLayer(function (otherLayer) {
+                const props = otherLayer.feature.properties;
+                if (props.ord_stname_concat === selectedName) {
+                    const segmentLength = props.dist_miles || 0; // Default to 0 if no value
+
+                    // Add to total length
+                    totalLength += segmentLength;
+
+                    // Add to specific categories based on street_status
+                    if (props.street_status === 0) {
+                        continuousLength += segmentLength;
+                    } else if (props.street_status === 1) {
+                        discontinuousLength += segmentLength;
+                    } else if (props.street_status === 2) {
+                        addedLength += segmentLength;
+                    }
+
+                    // Highlight the segment
+                    otherLayer.setStyle({
+                        color: getColor(props.street_status), // Color based on street_status
+                        weight: 5,          // Thicker border
+                        opacity: 1.0        // Fully opaque
+                    });
+                } else {
+                    // Fade out other segments
+                    otherLayer.setStyle({
+                        opacity: 0.25,
+                        color: 'gray',
+                        weight: 2
+                    });
+                }
             });
 
-            layer.setStyle({
-                weight: 9,
-                color: 'yellow',
-                dashArray: '',
-                fillOpacity: 1,
-                opacity:1
+            layer.bringToFront(); // Bring the hovered feature to the front
+
+            // Update the info box with the calculated lengths
+            info.update({
+                ord_stname_concat: selectedName,
+                totalLength,
+                continuousLength,
+                discontinuousLength,
+                addedLength
             });
-
-            layer.bringToFront();
-
-            info.update(layer.feature.properties);
         }
 
-        /* global statesData */
+
+        // load the street data
         const all_geojson = L.geoJson(all_streets_diss, {
             style,
             onEachFeature
         }).addTo(map);
 
+        // reset the highlighted data
         function resetHighlight(e) {
             all_geojson.eachLayer(function (layer) {
                 layer.setStyle({
-                    fillOpacity: 0.8, // Default transparency for unselected features
-                    opacity: 0.8      // Line transparency
+                    color: getColor(layer.feature.properties.street_status),
+                    weight: 7,
+                    opacity: 0.8
                 });
             });
 
-            all_geojson.resetStyle(e.target);
-
-            info.update();
+            info.update(); // Clear the info box
         }
 
         // not used for now
@@ -184,21 +210,7 @@
             map.fitBounds(e.target.getBounds());
         }
 
-        function changeHighlite(e) {
-            all_geojson.eachLayer(function (layer) {
-                layer.setStyle({
-                    fillOpacity: 0.25, // Default transparency for unselected features
-                    opacity: 0.25      // Line transparency
-                });
-            });
-
-            // Highlight the clicked feature
-            layer.setStyle({
-                fillOpacity: 1.0, // Fully opaque for the clicked feature
-                opacity: 1.0
-            });
-        }
-
+        // what to do for feach feature
         function onEachFeature(feature, layer) {
             layer.on({
                 mouseover: highlightFeature,
@@ -206,6 +218,8 @@
 
             });
         }
+
+        // build out the legend by coloring each segement
         const legend = L.control({ position: 'bottomright' });
 
         legend.onAdd = function (map) {
@@ -229,6 +243,15 @@
 
 
     </script>
+</body>
+
+<body>
+    <p><a href="https://mike-babb.github.io/blog/2025/01/01/seattles-discontinuous-streets">Return to post</a></p>
+    <p><b>Source:</b> Added segments were created by me, <a href="mailto:babb.mike@outlook.com">Michael Babb</a>.
+        See this <a href="https://github.com/mike-babb/seattle_streets"> git repo</a> for detailed information about how these segments were created and the code to do so. The street network comes from the
+        <a href="https://data-seattlecitygis.opendata.arcgis.com/datasets/783fd63545304bdf9d3c5f2065751614_0/explore">City of Seattle</a> and
+        the webmap features data from <a href="https://www.openstreetmap.org/">OpenStreetMap</a>. As is often the case with geospatial data, there are minor discrepancies between data sources pertaining to the same area. If anything looks execptionally wrong, please let me know.
+
 </body>
 
 </html>
