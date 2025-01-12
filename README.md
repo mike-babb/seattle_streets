@@ -22,7 +22,7 @@ The streets colored black are the existing streets with discontinuities. The red
 The streets with the name Galer differ based on street prefix and street type. E Galer Street is found in the eastern portion of the city (Capitol Hill) and W Galer is found in the western portion of the city (Magnolia and Queen Anne). The suffix 'ST' indicates the road is of type "street" - a navigatable road - while the suffix 'PL' indicates the road is of type "Place", a road with a dead end that is accessible only from a larger street. One of the components driving the discontinuous streets is the different sections of the city and when streets transition from one section to another. More on this in the future work section.
 
 # City Sections
-Seattle is divided into eight sections, basesd on compass directions. The eight sections can be seen in the image below.
+Seattle is divided into eight sections, basesd on compass directions. The eight sections can be seen in the image below.  
 <img src="./graphics/seattle_sections.png" alt="seattle sections" width="1000" height="530"/>  
 
 The map on the left features the sections identified by direction prefix or direction suffix. Roads without a direction prefix or suffix are labeled as "No direction". The majority of roads without a direction prefix or suffix are located in the central business district. Throughout Seattle, streets run east/west and avenues run north/south. In the central business district, both streets and avenues are directionless. North of Denny way, streets are directionless while avenues are not. East of Broadway, streets feature a direction while avenues do not. Note that throughout the city, there are streets without a direction prefix or suffix, but this is limited to specific roads and road types (trails and interstates, for example). The image on the right is the convex hull surrounding each directional prefix / suffix (after removing certain roads and types). Before starting this project, I had a general idea about the extents of the city sections. These maps was helpful in diagnosing why some roads were being connected and some where not. [Step 01](/code/step_01_import_export_street_data.ipynb) and [step 02](/code/step_02_export_nodes_seattle_streets.ipynb) identifies the city sections on the streets and creates the convex hulls.
@@ -62,20 +62,22 @@ This image below is illustrative of many of the reasons for the discontinuties i
 * State routes (520 / HW 99) and I-5  
 
 ## Facts about the streets added:
-* 2,497 roads in the study area | 1,933 road miles: see these graphics for a comparison of [miles](/graphics/barplot_miles.png) and [road segments](/graphics/barplot_segment_count.png)  
-* 1,357 roads without discontinuities | 421 road miles  
-* 1,140 roads with discontinuities | 1,512 road miles  
-* 3,643 segments added across 1,140 roads | 834 miles   
-* Average of ~3.2 segments per uniquely named road
-* Average segment length: ~0.23 Miles
-* Median segment length: ~443 Feet
-* Greatest number of segments added: 14 (1ST AVE NW, 30TH AVE S, 35TH AVE S, W RAYE ST)
-* Longest segment: ~5 Miles:  7Th PL S 
-* Shortest segment: ~4 Feet: SW Cloverdale ST
+* 2,497 roads in the study area | 1,932 road miles: see these graphics for a comparison of [miles](/graphics/barplot_miles.png) and [road segments](/graphics/barplot_segment_count.png)  
+* 1,362 roads without discontinuities | 437 road miles  
+* 1,135 roads with discontinuities | 1,495 road miles  
+* 3,632 segments added across 1,135 roads | 832 miles   
+* Average of ~3.2 segments added per uniquely named road
+* Average added segment length: ~0.23 Miles
+* Median added segment length: ~443 Feet
+* Greatest number of segments added: [14 (1ST AVE NW, 30TH AVE S, 35TH AVE S, W RAYE ST)](/graphics/ex_04_most_added_segments.png)
+* Longest segment: ~5 Miles:  [7TH PL S](/graphics/ex_05_longest_added_segments.png)
+* Shortest segment: ~4 Feet: [SW Cloverdale ST ](/graphics/ex_06_shortest_segment.png)
+
+I particularly like the image of SW Cloverdale ST because it exemplifies how connectivity is in part a function of mode of travel. Clearly, a pedestrian can navigate around that barrier while a vechicle cannot.
 
 Below is a histogram of the added streets:
 ![histogram of added streets](/graphics/histogram_ALL_streets.png)
-This figure features a number of descriptive statistics showcasing the distribution of the length of the added segments. In general, most of the added segments are rather short, less than a quarter of a mile. `Step 04` creates this histogram and histograms for each street type and additional summary graphics.
+This figure features a number of descriptive statistics showcasing the distribution of the length of the added segments. In general, most of the added segments are rather short, less than a quarter of a mile. Of all the added segments (3,632), 95% are less than one mile. `Step 04` creates this histogram and histograms for each street type and additional summary graphics.
 
 # File Tree and File Description 
 ├── README.md - This file  
@@ -91,7 +93,7 @@ This figure features a number of descriptive statistics showcasing the distribut
 ├── data  
 │   ├── Seattle_City_Limits_3136622578314448116.gpkg - Seattle City Limits downloaded from the City of Seattle. Only used in the qGIS map.  
 │   ├── Street_Network_Database_SND_5117857036965774451.gpkg - Stree Network downloaded from the City of Seattle. This is the starting file.  
-│   ├──  Street_Network_Database_Seattle_Central_Streets.csv - A list of Street IDs curated using qGIS. Included for use in Step 02.  
+│   ├── Street_Network_Database_Seattle_Central_Streets.csv - A list of Street IDs curated using qGIS. Included for use in Step 02.  
 │   └── blank_street_type_modified.xlsx - Roads with a manually created classifications. Used to ensure that every road has a classification (AVE, WAY, PL, for example.)  
 ├── graphics  
 │   ├── barplot_miles.png - barplot of the total miles by road type and road status.  
@@ -119,9 +121,10 @@ This figure features a number of descriptive statistics showcasing the distribut
 
 # Future work
 Making v1.0 of this repo publically availably was my first goal. My next two goals are as follows:  
-1) Create a webmap to embed in either this repo or a different blog. I'm currently exploring a combination of [PyScript](https://pyscript.net/) and [Folium](https://python-visualization.github.io/folium/latest/getting_started.html) to accomplish this. 
+1) ~~Create an interactive webmap to embed the results.~~ [Click here for an interactive webmap](https://mike-babb.github.io/media/discontinuous_streets.html)
+
 2) Connect streets based on name, not just street type. While it's easy to see that a case could be made to connect Galer across the city, other streets are less obvious. For example, there are many streets with the name '51st'. The image below showcases this phenomenon:  
 
-<img src="./graphics/ex_04_51.png" alt="51st" width="500" height="648"/>
+<img src="./graphics/ex_07_51.png" alt="51st" width="500" height="648"/>
 
-There are five streets named 51st: NE 51st ST, 51st AVE NE, 51st AVE SW, and 51st AVE S, and 51st PL S. Should 51st AVE S and 51st AVE NE be connected? Perhaps! Upon visual inspection, they align to a quasi-grid. But then, so do most of the streets in Seattle. Version 2.0 will feature connections between streets that should mostly likely be connected. For example, W GALER ST will connect to GALER ST which will connect to E GALER ST. The best way to accomplish this is to use a combination programmatic identification and manual review to create the combination. With approximately 2.5K uniquely named roads, that's a few hours work to identify logical groupings using python and then review for consistency.
+There are five streets named 51st: NE 51st ST, 51st AVE NE, 51st AVE SW, and 51st AVE S, and 51st PL S. Should 51st AVE S and 51st AVE NE be connected? Perhaps! Upon visual inspection, they align to a quasi-grid. But then, so do most of the streets in Seattle. Version 2.0 will feature connections between streets that should mostly likely be connected. For example, W GALER ST will connect to GALER ST which will connect to E GALER ST. The best way to accomplish this is through a combination programmatic identification and manual review to create the template for the street connections. 
