@@ -7,7 +7,7 @@
 How many streets in Seattle are disconntinuous? Or, "How frequently do roads in Seattle, start, stop, and resume?" This typically looks like a road running for a few blocks, terminating, and then resuming a few blocks later. A prime example is Galer Street. Galer street is an east-west street that runs through the neighborhoods of Magnolia, Queen Anne, Capitol Hill, and Madison Park.  
 <img src="./graphics/ex_01_galer.png" alt="galer" width="1000" height="130"/>
 
-[SEE THIS PAGE FOR AN INTERACTIVE MAP OF THE ADDED STREETS](./maps/jsmap_v2.html)
+[SEE THIS PAGE FOR AN INTERACTIVE MAP OF THE ADDED STREETS](https://mike-babb.github.io/media/discontinuous_streets.html)
 
 The streets colored black are the existing streets with discontinuities. The red lines are the "missing portions" joining the end of one section of street to another. (Note: this color scheme of red and black is used throughout this project in the graphics and maps.) Galer is also separated into different streets based on city directional section and road type. Accordingly, there are five streets that feature the name "Galer" and three out of those five streets feature a discontinuity. (The number of discontinuities is equal to the number of portions minus one.) The table below summarizes the number of discontinuties in each portion of the street.  
 
@@ -28,8 +28,7 @@ Seattle is divided into eight sections, basesd on compass directions. The eight 
 The map on the left features the sections identified by direction prefix or direction suffix. Roads without a direction prefix or suffix are labeled as "No direction". The majority of roads without a direction prefix or suffix are located in the central business district. Throughout Seattle, streets run east/west and avenues run north/south. In the central business district, both streets and avenues are directionless. North of Denny way, streets are directionless while avenues are not. East of Broadway, streets feature a direction while avenues do not. Note that throughout the city, there are streets without a direction prefix or suffix, but this is limited to specific roads and road types (trails and interstates, for example). The image on the right is the convex hull surrounding each directional prefix / suffix (after removing certain roads and types). Before starting this project, I had a general idea about the extents of the city sections. These maps was helpful in diagnosing why some roads were being connected and some where not. [Step 01](/code/step_01_import_export_street_data.ipynb) and [step 02](/code/step_02_export_nodes_seattle_streets.ipynb) identifies the city sections on the streets and creates the convex hulls.
 
 # Data
-The data powering this analysis is a single GeoPackage from the City of Seattle:
-https://data-seattlecitygis.opendata.arcgis.com/datasets/783fd63545304bdf9d3c5f2065751614_0/explore
+The data powering this analysis is a single GeoPackage from the [City of Seattle](https://data-seattlecitygis.opendata.arcgis.com/datasets/783fd63545304bdf9d3c5f2065751614_0/explore).
 
 These are the streets in and near the City of Seattle. This dataset appears to be updated frequently, so I saved the version I downloaded on 2024/11/09 at 5:20 PM into the [data](/data/Street_Network_Database_SND_5117857036965774451.gpkg) folder of this repo.  
 
@@ -88,20 +87,25 @@ This figure features a number of descriptive statistics showcasing the distribut
 │   ├── step_03_find_discontinuities.ipynb - use NetworkX to identify discontinuities and create the added segments.  
 │   ├── step_04_prepare_graphs_and_stats.ipynb - conduct analyses on the added segments.  
 │   ├── step_05_drawn_an_nx_graph.ipynb - plot a NetworkX graph object of Galer. The plot changes everytime the code is run.  
-│   ├── streets_to_remove.txt - a list (nine, as of 2024/12/25) of short segments from the original data that can be removed. These are most likely erronneous data artifacts inadvertently left in during data processing by the City of Seattle. These were discovered by panning around a qGIS map visually identifying oddities. I have no doubt there are more to discover. In step 2, this file can be loaded and used to remove the erroneous segments.  
 │   └── utils.py - functions used throughout the notebooks.  
 ├── data  
 │   ├── Seattle_City_Limits_3136622578314448116.gpkg - Seattle City Limits downloaded from the City of Seattle. Only used in the qGIS map.  
 │   ├── Street_Network_Database_SND_5117857036965774451.gpkg - Stree Network downloaded from the City of Seattle. This is the starting file.  
 │   ├── Street_Network_Database_Seattle_Central_Streets.csv - A list of Street IDs curated using qGIS. Included for use in Step 02.  
-│   └── blank_street_type_modified.xlsx - Roads with a manually created classifications. Used to ensure that every road has a classification (AVE, WAY, PL, for example.)  
+│   ├── blank_street_type_modified.xlsx - Roads with a manually created classifications. Used to ensure that every road has a classification (AVE, WAY, PL, for example.)  
+│   └── streets_to_remove.txt - a list (12, as of 2024/1/10) of short segments from the original data that can be removed. These are most likely erronneous data artifacts inadvertently left in during data processing by the City of Seattle. These were discovered by panning around a qGIS map visually identifying oddities. I have no doubt there are more to discover. In step 2, this file can be loaded and used to remove the erroneous segments.  
 ├── graphics  
 │   ├── barplot_miles.png - barplot of the total miles by road type and road status.  
 │   ├── barplot_segment_count.png - barplot of the total number of segments by road type and road status.  
 │   ├── ex_01_galer.png - street sections added to Galer.    
 │   ├── ex_02_overall.png - street sections added across the City of Seattle.  
 │   ├── ex_03_north_capitol_hill.png - street sections added in north Capitol Hill.  
-│   ├── ex_04_51.png - street sections added for all roads named 51st.  
+│   ├── ex_04_most_added_segments.png - streets with the most added segments.  
+│   ├── ex_05_longest_added_segments.png - street with the longest added segments.  
+│   ├── ex_06_shortest_segment.png - screenshot of the shortest added segment.  
+│   ├── ex_07_51.png - street sections added for all roads named 51st.  
+│   ├── ex_08_15th_ave_w.png - erroneous segments for 15TH AVE W.  
+│   ├── ex_09_sw_florida_st.png - erroneous segments for SW FLORDIA ST.  
 │   ├── histogram_ALL_streets.png - histogram for all roads.  
 │   ├── histogram_AVE.png - histograms for roads of type: Avenue  
 │   ├── histogram_BLVD.png - histogram for roads of type: Boulevard  
@@ -115,8 +119,9 @@ This figure features a number of descriptive statistics showcasing the distribut
 │   ├── histogram_WAY.png - histogram for roads of type: Way  
 │   └── seattle_sections.png - maps of the sections in the City of Seattle.  
 ├── maps  
-│   ├── seattle_streets.qgz - qGIS map showcasing different aspects of the added street types. After running all notebooks, this layer should load.  
-│   └── test_map.html - Initial attempt at creating a web map.  
+│   ├── all_streets_diss.geojson - continuous, discontinous, and added roads in geojson format.  
+│   ├── discontinuous_streets.html - interactive webmap featuring the continuous, discontinous, and added roads.  
+│   └── seattle_streets.qgz - qGIS map showcasing different aspects of the added street types. After running all notebooks, this layer should load.  
 └── seattles_discontinuous_streets_2024_11_20.pptx - Presentation I gave to the [CUGOS](https://cugos.org/) group on November 20, 2024 showcasing the motivation, findings, limitations and next steps of this project. This presentation encompasses a lot of the work as described in this `README.md` file.
 
 # Future work
@@ -127,4 +132,4 @@ Making v1.0 of this repo publically availably was my first goal. My next two goa
 
 <img src="./graphics/ex_07_51.png" alt="51st" width="500" height="648"/>
 
-There are five streets named 51st: NE 51st ST, 51st AVE NE, 51st AVE SW, and 51st AVE S, and 51st PL S. Should 51st AVE S and 51st AVE NE be connected? Perhaps! Upon visual inspection, they align to a quasi-grid. But then, so do most of the streets in Seattle. Version 2.0 will feature connections between streets that should mostly likely be connected. For example, W GALER ST will connect to GALER ST which will connect to E GALER ST. The best way to accomplish this is through a combination programmatic identification and manual review to create the template for the street connections. 
+There are five streets named 51st: NE 51st ST, 51st AVE NE, 51st AVE SW, and 51st AVE S, and 51st PL S. (Only 4 are shown at this scale; 51st PL S is obscured by 51st AVE S.) Should 51st AVE S and 51st AVE NE be connected? Perhaps! Upon visual inspection, they align to a quasi-grid. But then, so do most of the streets in Seattle. Version 2.0 will feature connections between streets that should mostly likely be connected. For example, W GALER ST will connect to GALER ST which will connect to E GALER ST. The best way to accomplish this is through a combination programmatic identification and manual review to create the template for the street connections. 
