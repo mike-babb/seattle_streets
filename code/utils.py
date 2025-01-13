@@ -9,7 +9,9 @@ import geopandas as gpd
 import math
 import numpy as np
 import pandas as pd
+import shapely.geometry
 from shapely.geometry import Point
+from shapely.ops import linemerge
 
 
 def write_gdf(gdf: gpd.GeoDataFrame, output_file_path:str, output_file_name:str):
@@ -82,7 +84,7 @@ def generate_street_end_vertices(gdf:gpd.GeoDataFrame) -> gpd.GeoDataFrame | gpd
     
     return gdf, node_gdf
 
-def points2distance(start, end, unit):
+def points2distance(start:tuple, end:tuple, unit:str='miles'):
     """
     Calculate distance (in kilometers) between two points given as (long, latt) pairs
     based on Haversine formula (http://en.wikipedia.org/wiki/Haversine_formula).
@@ -111,6 +113,32 @@ def points2distance(start, end, unit):
         earths_radius = 6731
     # return the distance between the two points
     return earths_radius * c
+
+
+def check_MultiLineStrings(geom:shapely.geometry):
+    # does every MultiLineString need to be a MultilineString?
+    output = geom
+    if geom.geom_type == 'MultiLineString':
+        new_geom = linemerge(lines = geom)
+        if new_geom.geom_type == 'LineString':
+            output = new_geom
+    return output
+
+
+
+
+def write_json(json_data:str, output_file_path:str,
+               output_file_name:str):
+    
+    ofpn = os.path.join(output_file_path, output_file_name)
+    var_name_str = os.path.splitext(output_file_name)[0]
+    print(var_name_str)
+    with open(ofpn, 'w') as file:    
+        write_line = 'var {} ='.format(var_name_str)
+        file.write(write_line)
+        file.write(json_data)
+    
+    return None
 
 
 if __name__ == '__main__':
