@@ -69,7 +69,7 @@ This image below is illustrative of many of the reasons for the discontinuties i
 * Average added segment length: ~0.23 Miles
 * Median added segment length: ~443 Feet
 * Greatest number of segments added: [14 (1ST AVE NW, 30TH AVE S, 35TH AVE S, W RAYE ST)](/graphics/ex_04_most_added_segments.png)
-* Longest segment: ~5 Miles:  [7TH PL S](/graphics/ex_05_longest_added_segments.png)
+* Longest segment: ~5 Miles:  [7TH PL S (10 longest added segment)](/graphics/ex_05_longest_added_segments.png)
 * Shortest segment: ~4 Feet: [SW Cloverdale ST ](/graphics/ex_06_shortest_segment.png)
 
 I particularly like the image of SW Cloverdale ST because it exemplifies how connectivity is in part a function of mode of travel. Clearly, a pedestrian can navigate around that barrier while a vechicle cannot.
@@ -128,8 +128,15 @@ This figure features a number of descriptive statistics showcasing the distribut
 Making v1.0 of this repo publically availably was my first goal. My next two goals are as follows:  
 1) ~~Create an interactive webmap to embed the results.~~ [Click here for an interactive webmap](https://mike-babb.github.io/media/discontinuous_streets.html)
 
+2) Ensure connectivity is street-end to street-end. [nx.k_edge_augmentation()](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.connectivity.edge_augmentation.k_edge_augmentation.html) is phenomenal and very fast, especially when a pool of candidate edges of supplied. Those weight of the candidate edges is the straigt-line distance between any two nodes. Sometimes, the shortest edge connecting two discontinuous street segments is not street-end to street-end but sometimes street-end to mid-point. This is rare, but it has been observed upon visual inspection. This image showcases this phenomenon: 
+
+<img src="./graphics/ex_10_woodlawn_ave_n.png" alt="woodlawn" width="500" height="528"/>
+
+
+ One way to fix this is to use the [nx.degree_centrality](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.centrality.degree_centrality.html#networkx.algorithms.centrality.degree_centrality) to further winnow down the list of nodes that can be used to form connections between disconnected segments. The more connected the node, the more "central" is the node. In general, the nodes at the end of the street are going to be less connected than the nodes in the center of the road. Definitely something to incorporate in v2.0.
+
 2) Connect streets based on name, not just street type. While it's easy to see that a case could be made to connect Galer across the city, other streets are less obvious. For example, there are many streets with the name '51st'. The image below showcases this phenomenon:  
 
 <img src="./graphics/ex_07_51.png" alt="51st" width="500" height="648"/>
 
-There are five streets named 51st: NE 51st ST, 51st AVE NE, 51st AVE SW, and 51st AVE S, and 51st PL S. (Only 4 are shown at this scale; 51st PL S is obscured by 51st AVE S.) Should 51st AVE S and 51st AVE NE be connected? Perhaps! Upon visual inspection, they align to a quasi-grid. But then, so do most of the streets in Seattle. Version 2.0 will feature connections between streets that should mostly likely be connected. For example, W GALER ST will connect to GALER ST which will connect to E GALER ST. The best way to accomplish this is through a combination programmatic identification and manual review to create the template for the street connections. 
+There are five streets that include 51st in the name: NE 51st ST, 51st AVE NE, 51st AVE SW, and 51st AVE S, and 51st PL S. (Only 4 are shown at this scale; 51st PL S is obscured by 51st AVE S.) Should 51st AVE S and 51st AVE NE be connected? Perhaps! Upon visual inspection, the two streets align to a quasi-grid. But then, so do most of the streets in Seattle. Version 2.0 will feature connections between streets that should mostly likely be connected. For example, W GALER ST will connect to GALER ST which will connect to E GALER ST. The best way to accomplish this is through a combination programmatic identification and manual review to create the template for the street connections. 
