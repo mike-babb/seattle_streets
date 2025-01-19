@@ -11,3 +11,8 @@ snd_id,description
 47787, short segment of 15TH AVE W
 26761, short segment of SW FLORIDA AVE
 50128, short segment of WEST MARGINAL WAY SW
+48148, short segment of 33RD AVE S
+49104, short segment of 60TH AVE SW
+48369, short segment of S PILGRAM ST
+48387, short segment of S PERRY ST
+
