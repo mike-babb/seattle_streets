@@ -3,6 +3,7 @@
 
 # standard
 import os
+import re
 
 # external
 import geopandas as gpd
@@ -140,6 +141,17 @@ def write_json(json_data:str, output_file_path:str,
     
     return None
 
+def get_sort_order(sn):
+    # simple function to return the numeric portion of a street name
+    # if it is numeric, pad it with zeros
+    re_outcome = re.findall(pattern=r'\d+', string = sn)
+    if re_outcome:
+        outcome = re_outcome[0]
+        outcome = outcome.zfill(3)
+    else:
+        outcome = sn
+    
+    return outcome
 
 if __name__ == '__main__':
     print('find those streets')

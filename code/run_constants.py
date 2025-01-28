@@ -33,7 +33,7 @@ S02_BST_IN_FILE_NAME = 'blank_street_type_modified.xlsx'
 S02_SND_FULL_OUT_FILE_NAME = 'Street_Network_Database_Seattle_Full.gpkg'
 
 # STEP 2: INPUT STREET NETWORK ID STREETS IN THE CITY CENTRAL PART OF THE CITY - MANUALLY CREATED USING qGIS
-S02_CENTRAL_STREETS_IN_FILE_NAME = 'Street_Network_Database_Seattle_Central_Streets.csv'
+S02_CENTRAL_STREETS_IN_FILE_NAME = 'city_portion.csv'
 
 # STEP 2: OUTPUT CITY SECTIONS AS CREATED BY A CONVEX HULL OPERATION
 S02_CITY_SECTIONS_OUT_FILE_NAME = 'city_sections.gpkg'
@@ -70,3 +70,6 @@ S06_STREET_GROUP_OUT_FILE_NAME = 'street_groups.xlsx'
 
 # STEP 6: INDIVIDUAL PLOTS OUTPUT PATH
 S06_PLOT_OUTPUT_FILE_PATH = '../../../project/seattle_streets/print/individual_streets'
+
+# STEP 6: CITY PORITON GROUPS
+S06_PLOT_OUTPUT_FILE_PATH_CITY_PORTION_GROUPS = '../../../project/seattle_streets/print/city_portion_groups'
