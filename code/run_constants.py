@@ -71,5 +71,9 @@ S06_STREET_GROUP_OUT_FILE_NAME = 'street_groups.xlsx'
 # STEP 6: INDIVIDUAL PLOTS OUTPUT PATH
 S06_PLOT_OUTPUT_FILE_PATH = '../../../project/seattle_streets/print/individual_streets'
 
-# STEP 6: CITY PORITON GROUPS
+# STEP 6: CITY PORTION GROUP CHECK OUTPUT PATH
+S06_CPG_OUTPUT_FILE_NAME = 'city_portion_check_working.xlsx'
+
+# STEP 6: CITY PORITON GROUP PLOTS
 S06_PLOT_OUTPUT_FILE_PATH_CITY_PORTION_GROUPS = '../../../project/seattle_streets/print/city_portion_groups'
+
