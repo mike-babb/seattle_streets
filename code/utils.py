@@ -153,5 +153,17 @@ def get_sort_order(sn):
     
     return outcome
 
+
+def create_name(row):
+    ostnc = row['ord_stname_concat']
+    cp = row['city_portion']
+
+    if cp not in ostnc:
+        outcome = ostnc + ' ' + cp
+    else:
+        outcome = ostnc
+    return outcome
+
+
 if __name__ == '__main__':
     print('find those streets')
