@@ -165,5 +165,15 @@ def create_name(row):
     return outcome
 
 
+def hey_what_is_na(df:pd.DataFrame):
+
+    col_names = df.columns.tolist()
+    for cn in col_names:
+        na_check = df[cn].isna().value_counts()
+        if na_check.shape[0] > 1:
+            print(na_check)
+
+    return None
+
 if __name__ == '__main__':
     print('find those streets')
