@@ -66,7 +66,7 @@ S03_CLEANED_STREET_GROUP_OUT_FILE_NAME = 'Street_Network_Database_Seattle_workin
 # STEP 4 CONSTANTS
 ################################################################################
 
-# STEP 3: INPUT STREETS - THE WORKING STREETS FROM STEP 2
+# STEP 4: INPUT STREETS - THE WORKING STREETS FROM STEP 2
 S04_SND_WORKING_IN_FILE_NAME = S03_CLEANED_STREET_GROUP_OUT_FILE_NAME
 
 # STEP 4: INPUT NODES - THE NODES FROM STEP 2
@@ -83,7 +83,7 @@ S04_MISSING_OUT_FILE_NAME = 'missing_segments_v2.gpkg'
 ################################################################################
 
 # STEP 5: OUTPUT STREET ANALYSIS FILE
-S04_ANALYSIS_OUT_FILE_NAME = 'street_analysis.xlsx'
+S05_ANALYSIS_OUT_FILE_NAME = 'street_analysis.xlsx'
 
 # STEP 5: INPUT STREET NETWORK
 S05_MISSING_IN_FILE_NAME = S04_MISSING_OUT_FILE_NAME

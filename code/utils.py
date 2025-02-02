@@ -175,5 +175,14 @@ def hey_what_is_na(df:pd.DataFrame):
 
     return None
 
+def get_a_set(cn:pd.Series):
+    return set(cn.unique().tolist())
+
+def split_col_values(cn:pd.Series):
+    output_list = []
+    for cv in cn.unique().tolist():
+        output_list.extend(cv.split('_'))
+    return set(output_list)
+
 if __name__ == '__main__':
     print('find those streets')

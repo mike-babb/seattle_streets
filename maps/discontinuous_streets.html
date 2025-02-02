@@ -88,11 +88,12 @@
             if (props) {
                 this._div.innerHTML = `
             <h4>Street Information</h4>
-            <b><u>${props.ord_stname_concat}</u></b><br />
+            <b><u>${props.ord_stname_type_group}</u></b><br />
             <b>Total Length:</b> ${props.totalLength.toFixed(2)} miles<br />
             <b><span style="color: #33a02c">Continuous:</span></b> ${props.continuousLength.toFixed(2)} miles<br />
-            <b>Discontinuous:</b> ${props.discontinuousLength.toFixed(2)} miles<br />
-            <b><span style="color: #ca0020">Added:</span></b> ${props.addedLength.toFixed(2)} miles
+            <b>Discontinuous:</b> ${props.discontinuousLength.toFixed(2)} miles<br />          
+            <b><span style="color: #ca0020">Within-sector Added:</span></b> ${props.addedLengthWS.toFixed(2)} miles<br />
+            <b><span style="color: #1a4bed">Inter-sector Added:</span></b> ${props.addedLengthIS.toFixed(2)} miles
         `;
             } else {
                 this._div.innerHTML = '<h4>Street Information</h4>Hover over a segment';
@@ -107,16 +108,19 @@
             // "#33a02c": green
             // "#000000": black
             // "#ca0020": red
+            // "#1a4bed": blue
             return st == 0 ? "#33a02c" :
                 st == 1 ? "#000000" :
-                    "#ca0020";
+                st == 2 ? "#ca0020":
+                "#1a4bed";
         }
 
         // get street type description
         function getStreetTypeDescription(st) {
             return st == 0 ? `<span style="color: #33a02c">CONTINUOUS STREET</span>` :
                 st == 1 ? `<span style="color: #000000">DISCONTINUOUS STREET</span>` :
-                    `<span style="color: #ca0020">ADDED STREET</span>`;
+                st == 2 ? `<span style="color: #000000">WITHIN-SECTOR ADDED STREET STREET</span>` :
+                    `<span style="color: #1a4bed">INTER-SECTOR ADDED STREET</span>`;
         }
 
         // styles a feature - a line segment - based on street_status
@@ -131,18 +135,19 @@
         // define what happens when a feature is a highlighted during a mouseover event        
         function highlightFeature(e) {
             const layer = e.target; // Get the hovered feature
-            const selectedName = layer.feature.properties.ord_stname_concat; // Get the street name
+            const selectedName = layer.feature.properties.ord_stname_type_group; // Get the street name
 
             // Initialize lengths
             let totalLength = 0;
             let continuousLength = 0;
             let discontinuousLength = 0;
-            let addedLength = 0;
+            let addedLengthWS = 0;
+            let addedLengthIS = 0;
 
             // Loop through all segments to calculate lengths
             all_geojson.eachLayer(function (otherLayer) {
                 const props = otherLayer.feature.properties;
-                if (props.ord_stname_concat === selectedName) {
+                if (props.ord_stname_type_group === selectedName) {
                     const segmentLength = props.dist_miles || 0; // Default to 0 if no value
 
                     // Add to total length
@@ -154,7 +159,9 @@
                     } else if (props.street_status === 1) {
                         discontinuousLength += segmentLength;
                     } else if (props.street_status === 2) {
-                        addedLength += segmentLength;
+                        addedLengthWS += segmentLength;
+                    }else if (props.street_status === 3) {
+                        addedLengthIS += segmentLength;
                     }
 
                     // Highlight the segment
@@ -177,11 +184,13 @@
 
             // Update the info box with the calculated lengths
             info.update({
-                ord_stname_concat: selectedName,
+                ord_stname_type_group: selectedName,
                 totalLength,
                 continuousLength,
                 discontinuousLength,
-                addedLength
+                addedLengthWS,
+                addedLengthIS
+
             });
         }
 
@@ -225,7 +234,7 @@
         legend.onAdd = function (map) {
 
             const div = L.DomUtil.create('div', 'info legend');
-            const grades = ['Continuous Street', 'Discontinuous Street', 'Added Street'];
+            const grades = ['Continuous Street', 'Discontinuous Street', 'Within-Sector Added Street', 'Inter-Sector Added Street'];
             const labels = [];
             let from, to;
 
