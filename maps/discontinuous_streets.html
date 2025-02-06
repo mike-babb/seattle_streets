@@ -88,12 +88,12 @@
             if (props) {
                 this._div.innerHTML = `
             <h4>Street Information</h4>
-            <b><u>${props.ord_stname_type_group}</u></b><br />
-            <b>Total Length:</b> ${props.totalLength.toFixed(2)} miles<br />
-            <b><span style="color: #33a02c">Continuous:</span></b> ${props.continuousLength.toFixed(2)} miles<br />
-            <b>Discontinuous:</b> ${props.discontinuousLength.toFixed(2)} miles<br />          
-            <b><span style="color: #ca0020">Within-sector Added:</span></b> ${props.addedLengthWS.toFixed(2)} miles<br />
-            <b><span style="color: #1a4bed">Inter-sector Added:</span></b> ${props.addedLengthIS.toFixed(2)} miles
+            <b><u>${props.osntg}</u></b><br />
+            <b>Total Length:</b> ${props.totalLength.toFixed(2)} miles | ${props.totalSegments.toFixed(0)} segments<br />
+            <b><span style="color: #33a02c">Continuous:</span></b> ${props.continuousLength.toFixed(2)} miles | ${props.continuousSegments.toFixed(0)} segments<br />
+            <b><span style="color: #000000">Discontinuous:</span></b> ${props.discontinuousLength.toFixed(2)} miles | ${props.discontinuousSegments.toFixed(0)} segments<br />          
+            <b><span style="color: #ca0020">Within-sector Added:</span></b> ${props.addedLengthWS.toFixed(2)} miles | ${props.addedSegmentsWS.toFixed(0)} segments<br />
+            <b><span style="color: #1a4bed">Inter-sector Added:</span></b> ${props.addedLengthIS.toFixed(2)} miles | ${props.addedSegmentsIS.toFixed(0)} segments
         `;
             } else {
                 this._div.innerHTML = '<h4>Street Information</h4>Hover over a segment';
@@ -123,19 +123,19 @@
                     `<span style="color: #1a4bed">INTER-SECTOR ADDED STREET</span>`;
         }
 
-        // styles a feature - a line segment - based on street_status
+        // styles a feature - a line segment - based on ss
         function style(feature) {
             return {
                 weight: 7,
                 opacity: .8,
-                color: getColor(feature.properties.street_status)
+                color: getColor(feature.properties.ss)
             };
         }
 
         // define what happens when a feature is a highlighted during a mouseover event        
         function highlightFeature(e) {
             const layer = e.target; // Get the hovered feature
-            const selectedName = layer.feature.properties.ord_stname_type_group; // Get the street name
+            const selectedName = layer.feature.properties.osntg; // Get the street name
 
             // Initialize lengths
             let totalLength = 0;
@@ -144,29 +144,44 @@
             let addedLengthWS = 0;
             let addedLengthIS = 0;
 
+            // Initialize counts
+            let totalSegments = 0;
+            let continuousSegments = 0;
+            let discontinuousSegments = 0;
+            let addedSegmentsWS = 0;
+            let addedSegmentsIS = 0;
+
             // Loop through all segments to calculate lengths
             all_geojson.eachLayer(function (otherLayer) {
                 const props = otherLayer.feature.properties;
-                if (props.ord_stname_type_group === selectedName) {
-                    const segmentLength = props.dist_miles || 0; // Default to 0 if no value
+                if (props.osntg === selectedName) {
+                    const segmentLength = props.dm || 0; // Default to 0 if no value
+                    const segmentCount = props.nr || 0; // Default to 0 if no value
 
                     // Add to total length
                     totalLength += segmentLength;
+                    totalSegments += segmentCount;
 
-                    // Add to specific categories based on street_status
-                    if (props.street_status === 0) {
-                        continuousLength += segmentLength;
-                    } else if (props.street_status === 1) {
-                        discontinuousLength += segmentLength;
-                    } else if (props.street_status === 2) {
-                        addedLengthWS += segmentLength;
-                    }else if (props.street_status === 3) {
-                        addedLengthIS += segmentLength;
+                    
+
+                    // Add to specific categories based on ss
+                    if (props.ss === 0) {
+                        continuousLength += segmentLength
+                        continuousSegments += segmentCount;
+                    } else if (props.ss === 1) {
+                        discontinuousLength += segmentLength
+                        discontinuousSegments += segmentCount;
+                    } else if (props.ss === 2) {
+                        addedLengthWS += segmentLength
+                        addedSegmentsWS += segmentCount;
+                    }else if (props.ss === 3) {
+                        addedLengthIS += segmentLength
+                        addedSegmentsIS += segmentCount;
                     }
 
                     // Highlight the segment
                     otherLayer.setStyle({
-                        color: getColor(props.street_status), // Color based on street_status
+                        color: getColor(props.ss), // Color based on ss
                         weight: 5,          // Thicker border
                         opacity: 1.0        // Fully opaque
                     });
@@ -184,13 +199,17 @@
 
             // Update the info box with the calculated lengths
             info.update({
-                ord_stname_type_group: selectedName,
+                osntg: selectedName,
                 totalLength,
                 continuousLength,
                 discontinuousLength,
                 addedLengthWS,
-                addedLengthIS
-
+                addedLengthIS,
+                totalSegments,
+                continuousSegments,
+                discontinuousSegments,
+                addedSegmentsWS,
+                addedSegmentsIS
             });
         }
 
@@ -205,7 +224,7 @@
         function resetHighlight(e) {
             all_geojson.eachLayer(function (layer) {
                 layer.setStyle({
-                    color: getColor(layer.feature.properties.street_status),
+                    color: getColor(layer.feature.properties.ss),
                     weight: 7,
                     opacity: 0.8
                 });
