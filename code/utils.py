@@ -3,6 +3,7 @@
 
 # standard
 import os
+import re
 
 # external
 import geopandas as gpd
@@ -128,10 +129,14 @@ def check_MultiLineStrings(geom:shapely.geometry):
 
 
 def write_json(json_data:str, output_file_path:str,
-               output_file_name:str):
+               output_file_name:str, var_name:str = None):
     
     ofpn = os.path.join(output_file_path, output_file_name)
-    var_name_str = os.path.splitext(output_file_name)[0]
+    if var_name is None:
+        var_name_str = os.path.splitext(output_file_name)[0]
+    else:
+        var_name_str = var_name
+        
     print(var_name_str)
     with open(ofpn, 'w') as file:    
         write_line = 'var {} ='.format(var_name_str)
@@ -140,6 +145,48 @@ def write_json(json_data:str, output_file_path:str,
     
     return None
 
+def get_sort_order(sn):
+    # simple function to return the numeric portion of a street name
+    # if it is numeric, pad it with zeros
+    re_outcome = re.findall(pattern=r'\d+', string = sn)
+    if re_outcome:
+        outcome = re_outcome[0]
+        outcome = outcome.zfill(3)
+    else:
+        outcome = sn
+    
+    return outcome
+
+
+def create_name(row):
+    ostnc = row['ord_stname_concat']
+    cp = row['city_portion']
+
+    if cp not in ostnc:
+        outcome = ostnc + ' ' + cp
+    else:
+        outcome = ostnc
+    return outcome
+
+
+def hey_what_is_na(df:pd.DataFrame):
+
+    col_names = df.columns.tolist()
+    for cn in col_names:
+        na_check = df[cn].isna().value_counts()
+        if na_check.shape[0] > 1:
+            print(na_check)
+
+    return None
+
+def get_a_set(cn:pd.Series):
+    return set(cn.unique().tolist())
+
+def split_col_values(cn:pd.Series):
+    output_list = []
+    for cv in cn.unique().tolist():
+        output_list.extend(cv.split('_'))
+    return set(output_list)
 
 if __name__ == '__main__':
     print('find those streets')
