@@ -55,6 +55,27 @@
             margin-top: 5px;
             opacity: 0.9;
         }
+
+        .city_section_legend {
+            text-align: left;
+            line-height: 18px;
+            color: #555;
+        }
+
+        .city_section_legend h5 {
+            margin: 0 0 5px;
+            color: #777;
+        }
+
+        .city_section_legend i {
+            width: 18px;
+            height: 5px;
+            float: left;
+            margin-right: 8px;
+            margin-top: 5px;
+            opacity: 0.9;
+
+        }
     </style>
 </head>
 
@@ -62,7 +83,9 @@
 
     <div id="map"></div>
 
+    <script type="text/javascript" src="city_sections.geojson"></script>
     <script type="text/javascript" src="all_streets_diss_v2.geojson"></script>
+
 
     <script>
         // Initialize the map
@@ -111,16 +134,16 @@
             // "#1a4bed": blue
             return st == 0 ? "#33a02c" :
                 st == 1 ? "#000000" :
-                st == 2 ? "#ca0020":
-                "#1a4bed";
+                    st == 2 ? "#ca0020" :
+                        "#1a4bed";
         }
 
         // get street type description
         function getStreetTypeDescription(st) {
             return st == 0 ? `<span style="color: #33a02c">CONTINUOUS STREET</span>` :
                 st == 1 ? `<span style="color: #000000">DISCONTINUOUS STREET</span>` :
-                st == 2 ? `<span style="color: #000000">WITHIN-SECTOR ADDED STREET STREET</span>` :
-                    `<span style="color: #1a4bed">INTER-SECTOR ADDED STREET</span>`;
+                    st == 2 ? `<span style="color: #000000">WITHIN-SECTOR ADDED STREET STREET</span>` :
+                        `<span style="color: #1a4bed">INTER-SECTOR ADDED STREET</span>`;
         }
 
         // styles a feature - a line segment - based on ss
@@ -152,7 +175,7 @@
             let addedSegmentsIS = 0;
 
             // Loop through all segments to calculate lengths
-            all_geojson.eachLayer(function (otherLayer) {
+            streets_geojson.eachLayer(function (otherLayer) {
                 const props = otherLayer.feature.properties;
                 if (props.osntg === selectedName) {
                     const segmentLength = props.dm || 0; // Default to 0 if no value
@@ -161,8 +184,6 @@
                     // Add to total length
                     totalLength += segmentLength;
                     totalSegments += segmentCount;
-
-                    
 
                     // Add to specific categories based on ss
                     if (props.ss === 0) {
@@ -174,7 +195,7 @@
                     } else if (props.ss === 2) {
                         addedLengthWS += segmentLength
                         addedSegmentsWS += segmentCount;
-                    }else if (props.ss === 3) {
+                    } else if (props.ss === 3) {
                         addedLengthIS += segmentLength
                         addedSegmentsIS += segmentCount;
                     }
@@ -213,16 +234,44 @@
             });
         }
 
+        function getCitySectionColor(category) {
+            const colors = {
+                'E': '#2de9ec',
+                'N': '#8c4cc8',
+                'NE': '#38CF60',
+                'NW': '#1a4bed',
+                'S': '#e6b71c',
+                'SW': '#cc2b28',
+                'W': '#ea1cb3',
+                'C': '#5b5b5b'
+            };
+            return colors[category] || "#000000"; // Default to black if category is unknown
+        }
+
+        function styleCitySection(feature) {
+            return {
+                color: getCitySectionColor(feature.properties.cp),
+                weight: 6,
+                opacity: 1
+            };
+        }
+
+        // load the city sections
+        const all_city_sections = L.geoJson(city_sections, {
+            style: styleCitySection
+        }
+        ).addTo(map);
+
 
         // load the street data
-        const all_geojson = L.geoJson(all_streets_diss, {
+        const streets_geojson = L.geoJson(all_streets_diss, {
             style,
             onEachFeature
         }).addTo(map);
 
         // reset the highlighted data
         function resetHighlight(e) {
-            all_geojson.eachLayer(function (layer) {
+            streets_geojson.eachLayer(function (layer) {
                 layer.setStyle({
                     color: getColor(layer.feature.properties.ss),
                     weight: 7,
@@ -260,6 +309,7 @@
             for (let i = 0; i < grades.length; i++) {
                 from = grades[i];
 
+
                 labels.push(`<i style="background:${getColor(i)}"></i> ${from}`);
             }
 
@@ -269,13 +319,46 @@
 
         legend.addTo(map);
 
+        // build out the legend by coloring each segement        
+        const city_section_legend = L.control({ position: 'bottomleft' });
+
+        city_section_legend.onAdd = function (map) {
+
+            const div = L.DomUtil.create('div', 'info city_section_legend');
+            // const sections = ["C", "E", "N", "NE", "NW", "S", "SW", "W",];
+            const sections = ["NW", "N", "NE", "W", "C", "E", "SW", "S"];
+            const section_labels = [];
+            let from, to;
+
+            for (let i = 0; i < sections.length; i++) {
+                from = sections[i];
+
+                console.log(getCitySectionColor(from))
+
+                // section_labels.push(`<i style="background:${getCitySectionColor(from)}"></i> ${from}`);                
+                section_labels.push(`<i style="background:${getCitySectionColor(from)}"></i> ${from}`);
+            }
+            div.innerHTML = `<strong>City Section</strong><br><br> ${section_labels.join('<br>')};`
+            return div;
+        };
+
+
+
+
+        city_section_legend.addTo(map);
+
 
     </script>
 </body>
 
 <body>
     <a href="https://mike-babb.github.io/blog/2025/01/01/seattles-discontinuous-streets">Return to post</a>
-    <b> | Source:</b> Added segments were created by <a href="mailto:babb.mike@outlook.com">Michael Babb</a>. See this <a href="https://github.com/mike-babb/seattle_streets"> git repo</a> for detailed information about how these segments were created and the code to do so. See the <a href="https://mike-babb.github.io/blog/2025/01/01/seattles-discontinuous-streets#known-issues-and-errata">known issues and errata section</a> for a description of things influencing connectivity and geospatial data issues. If you have any questions or anything looks particularly strange, please let me know: I am happy to address.
+    <b> | Source:</b> Added segments were created by <a href="mailto:babb.mike@outlook.com">Michael Babb</a>. See this
+    <a href="https://github.com/mike-babb/seattle_streets"> git repo</a> for detailed information about how these
+    segments were created and the code to do so. See the <a
+        href="https://mike-babb.github.io/blog/2025/01/01/seattles-discontinuous-streets#known-issues-and-errata">known
+        issues and errata section</a> for a description of things influencing connectivity and geospatial data issues.
+    If you have any questions or anything looks particularly strange, please let me know: I am happy to address.
 
 </body>
 
