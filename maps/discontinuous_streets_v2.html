@@ -83,7 +83,7 @@
 
     <div id="map"></div>
 
-    <script type="text/javascript" src="city_sections.geojson"></script>
+    <script type="text/javascript" src="city_section_lines.geojson"></script>
     <script type="text/javascript" src="all_streets_diss_v2.geojson"></script>
 
 
@@ -237,6 +237,8 @@
         function getCitySectionColor(category) {
             const colors = {
                 'E': '#2de9ec',
+                'EC': '#276464',
+                'NC': '#463159',
                 'N': '#8c4cc8',
                 'NE': '#38CF60',
                 'NW': '#1a4bed',
@@ -251,16 +253,21 @@
         function styleCitySection(feature) {
             return {
                 color: getCitySectionColor(feature.properties.cp),
-                weight: 6,
+                weight: 4,
                 opacity: 1
             };
         }
 
         // load the city sections
-        const all_city_sections = L.geoJson(city_sections, {
+        const all_city_sections = L.geoJson(city_section_lines, {
+            filter: function (feature) {
+                return feature.properties.dist == 90 && feature.properties.li == 0;
+            },
             style: styleCitySection
         }
         ).addTo(map);
+
+
 
 
         // load the street data
@@ -326,7 +333,7 @@
 
             const div = L.DomUtil.create('div', 'info city_section_legend');
             // const sections = ["C", "E", "N", "NE", "NW", "S", "SW", "W",];
-            const sections = ["NW", "N", "NE", "W", "C", "E", "SW", "S"];
+            const sections = ["NW", "N", "NE", "W", "NC", "E", "C", "EC", "SW", "S"];
             const section_labels = [];
             let from, to;
 
@@ -338,7 +345,7 @@
                 // section_labels.push(`<i style="background:${getCitySectionColor(from)}"></i> ${from}`);                
                 section_labels.push(`<i style="background:${getCitySectionColor(from)}"></i> ${from}`);
             }
-            div.innerHTML = `<strong>City Section</strong><br><br> ${section_labels.join('<br>')};`
+            div.innerHTML = `<strong>City Section</strong><br> ${section_labels.join('<br>')}`
             return div;
         };
 
@@ -352,7 +359,7 @@
 </body>
 
 <body>
-    <a href="https://mike-babb.github.io/blog/2025/01/01/seattles-discontinuous-streets">Return to post</a>
+    <a href="https://mike-babb.github.io/blog/2025/02/05/seattles_discontinuous-streets-v2">Return to post</a>
     <b> | Source:</b> Added segments were created by <a href="mailto:babb.mike@outlook.com">Michael Babb</a>. See this
     <a href="https://github.com/mike-babb/seattle_streets"> git repo</a> for detailed information about how these
     segments were created and the code to do so. See the <a
