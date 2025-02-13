@@ -31,8 +31,8 @@ def subset_node_gdf(node_gdf:gpd.GeoDataFrame, other_node_df:pd.DataFrame):
     node_subset_gdf = pd.merge(left = node_gdf, right = other_node_df)
     return node_subset_gdf   
 
-def create_city_portion(my_row:pd.Series) -> str:
-    """Identifies the portion of the city the street is in.
+def create_city_sector(my_row:pd.Series) -> str:
+    """Identifies the sector of the city the street is in.
     Args:
         my_row (pd.Series): row from a pandas' dataframe
 
@@ -187,6 +187,50 @@ def split_col_values(cn:pd.Series):
     for cv in cn.unique().tolist():
         output_list.extend(cv.split('_'))
     return set(output_list)
+
+def keep_largest_geometry(gdf:gpd.GeoDataFrame,group_col_names:list = None):
+
+    # explode MultiPolygon Geometries and keep only the largest.
+    # this removes slivers and splinters.
+        
+    # explode
+    gdf = gdf.explode()
+    keep_col_names = gdf.columns
+    # select only Polygon or MultiPolygon geometries
+    # some geospatial operations produce errant points and LineStrings
+    gdf = gdf.loc[gdf['geometry'].geom_type.isin(['Polygon', 'MultiPolygon']), :]
+
+    # keep the biggest piece / remove slivers.
+    # Compute the area to accomplish this
+    gdf['geom_area'] = gdf['geometry'].area
+    
+    if group_col_names is None:
+        gdf['area_rank'] = gdf['geom_area'].rank(method = 'dense', ascending=False)
+    else:
+        gdf['area_rank'] = gdf.groupby(group_col_names)['geom_area'].rank(method = 'dense', ascending=False)
+    
+    # keep the largest, drop the area_rank column
+    gdf = gdf.loc[gdf['area_rank'] == 1, keep_col_names]
+
+    return gdf
+
+def build_gdf_from_geom(geom:shapely.geometry, remove_slivers:bool=True, 
+                        return_geom:bool=False,
+                        crs:int=4326):
+    # given a single shapely geometry, create a dataframe from it.
+    # optionally remove the slivers 
+    gdf = gpd.GeoDataFrame(data = {'id':[0]}, geometry=[geom], crs = crs)
+    if remove_slivers:
+        gdf = keep_largest_geometry(gdf = gdf)
+    
+    # optionally, return only the geometry
+    if return_geom:
+        output = gdf['geometry'].iloc[0]
+    else:
+        output = gdf
+
+    return output
+
 
 if __name__ == '__main__':
     print('find those streets')

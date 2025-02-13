@@ -102,10 +102,10 @@ S06_MISSING_IN_FILE_NAME = S04_MISSING_OUT_FILE_NAME
 # STEP 7 CONSTANTS
 ################################################################################
 
-# STEP 6: STREET GROUP EXCEL FILE NAME
+# STEP 7: STREET GROUP EXCEL FILE NAME
 S07_STREET_GROUP_OUT_FILE_NAME = 'street_groups.xlsx'
 
-# STEP 6: INDIVIDUAL PLOTS OUTPUT PATH
+# STEP 7: INDIVIDUAL PLOTS OUTPUT PATH
 S07_PLOT_OUTPUT_FILE_PATH = '../../../project/seattle_streets/print/individual_streets'
 
 ################################################################################
@@ -117,4 +117,25 @@ S08_CPG_OUTPUT_FILE_NAME = 'city_portion_check_working.xlsx'
 
 # STEP 8: CITY PORITON GROUP PLOTS
 S08_PLOT_OUTPUT_FILE_PATH_CITY_PORTION_GROUPS = '../../../project/seattle_streets/print/city_portion_groups'
+
+################################################################################
+# STEP 9 CONSTANTS
+################################################################################
+
+################################################################################
+# STEP 10 CONSTANTS
+################################################################################
+
+################################################################################
+# STEP 11 CONSTANTS
+################################################################################
+S11_NON_OVERLAPPING_CITY_SECTIONS_FILE_NAME = 'city_sections_non_overlapping.gpkg'
+
+S11_NON_OVERLAPPING_CITY_SECTIONS_POLY_INNER_RING_BUFFER_FILE_NAME = 'city_sections_non_overlapping_poly.gpkg'
+
+S11_NON_OVERLAPPING_CITY_SECTIONS_LINE_INNER_RING_BUFFER_FILE_NAME = 'city_sections_non_overlapping_line.gpkg'
+
+
+
+
 
