@@ -146,7 +146,7 @@ def write_json(json_data:str, output_file_path:str,
     return None
 
 def get_sort_order(sn):
-    # simple function to return the numeric portion of a street name
+    # simple function to return the numeric sector of a street name
     # if it is numeric, pad it with zeros
     re_outcome = re.findall(pattern=r'\d+', string = sn)
     if re_outcome:
@@ -160,7 +160,7 @@ def get_sort_order(sn):
 
 def create_name(row):
     ostnc = row['ord_stname_concat']
-    cp = row['city_portion']
+    cp = row['city_sector']
 
     if cp not in ostnc:
         outcome = ostnc + ' ' + cp

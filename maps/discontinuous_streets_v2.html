@@ -258,7 +258,7 @@
             };
         }
 
-        // load the city sections
+        // load the city sectors
         const all_city_sections = L.geoJson(city_section_lines, {
             filter: function (feature) {
                 return feature.properties.dist == 40 && feature.properties.li == 0;
@@ -332,13 +332,13 @@
         city_section_legend.onAdd = function (map) {
 
             const div = L.DomUtil.create('div', 'info city_section_legend');
-            // const sections = ["C", "E", "N", "NE", "NW", "S", "SW", "W",];
-            const sections = ["NW", "N", "NE", "W", "NC", "E", "C", "EC", "SW", "S"];
+            // const sectors = ["C", "E", "N", "NE", "NW", "S", "SW", "W",];
+            const sectors = ["NW", "N", "NE", "W", "NC", "E", "C", "EC", "SW", "S"];
             const section_labels = [];
             let from, to;
 
-            for (let i = 0; i < sections.length; i++) {
-                from = sections[i];
+            for (let i = 0; i < sectors.length; i++) {
+                from = sectors[i];
 
                 console.log(getCitySectionColor(from))
 

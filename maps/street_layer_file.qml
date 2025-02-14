@@ -620,14 +620,14 @@
         </config>
       </editWidget>
     </field>
-    <field name="city_portion" configurationFlags="NoFlag">
+    <field name="city_sector" configurationFlags="NoFlag">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field name="city_portion_group" configurationFlags="NoFlag">
+    <field name="city_sector_group" configurationFlags="NoFlag">
       <editWidget type="TextEdit">
         <config>
           <Option/>
@@ -669,8 +669,8 @@
     <alias name="" field="sn_id" index="9"/>
     <alias name="" field="en_id" index="10"/>
     <alias name="" field="dist" index="11"/>
-    <alias name="" field="city_portion" index="12"/>
-    <alias name="" field="city_portion_group" index="13"/>
+    <alias name="" field="city_sector" index="12"/>
+    <alias name="" field="city_sector_group" index="13"/>
     <alias name="" field="group_id" index="14"/>
     <alias name="" field="street_status" index="15"/>
     <alias name="" field="dist_miles" index="16"/>
@@ -688,8 +688,8 @@
     <policy policy="Duplicate" field="sn_id"/>
     <policy policy="Duplicate" field="en_id"/>
     <policy policy="Duplicate" field="dist"/>
-    <policy policy="Duplicate" field="city_portion"/>
-    <policy policy="Duplicate" field="city_portion_group"/>
+    <policy policy="Duplicate" field="city_sector"/>
+    <policy policy="Duplicate" field="city_sector_group"/>
     <policy policy="Duplicate" field="group_id"/>
     <policy policy="Duplicate" field="street_status"/>
     <policy policy="Duplicate" field="dist_miles"/>
@@ -707,8 +707,8 @@
     <policy policy="Duplicate" field="sn_id"/>
     <policy policy="Duplicate" field="en_id"/>
     <policy policy="Duplicate" field="dist"/>
-    <policy policy="Duplicate" field="city_portion"/>
-    <policy policy="Duplicate" field="city_portion_group"/>
+    <policy policy="Duplicate" field="city_sector"/>
+    <policy policy="Duplicate" field="city_sector_group"/>
     <policy policy="Duplicate" field="group_id"/>
     <policy policy="Duplicate" field="street_status"/>
     <policy policy="Duplicate" field="dist_miles"/>
@@ -726,8 +726,8 @@
     <default expression="" field="sn_id" applyOnUpdate="0"/>
     <default expression="" field="en_id" applyOnUpdate="0"/>
     <default expression="" field="dist" applyOnUpdate="0"/>
-    <default expression="" field="city_portion" applyOnUpdate="0"/>
-    <default expression="" field="city_portion_group" applyOnUpdate="0"/>
+    <default expression="" field="city_sector" applyOnUpdate="0"/>
+    <default expression="" field="city_sector_group" applyOnUpdate="0"/>
     <default expression="" field="group_id" applyOnUpdate="0"/>
     <default expression="" field="street_status" applyOnUpdate="0"/>
     <default expression="" field="dist_miles" applyOnUpdate="0"/>
@@ -745,8 +745,8 @@
     <constraint exp_strength="0" field="sn_id" notnull_strength="0" constraints="0" unique_strength="0"/>
     <constraint exp_strength="0" field="en_id" notnull_strength="0" constraints="0" unique_strength="0"/>
     <constraint exp_strength="0" field="dist" notnull_strength="0" constraints="0" unique_strength="0"/>
-    <constraint exp_strength="0" field="city_portion" notnull_strength="0" constraints="0" unique_strength="0"/>
-    <constraint exp_strength="0" field="city_portion_group" notnull_strength="0" constraints="0" unique_strength="0"/>
+    <constraint exp_strength="0" field="city_sector" notnull_strength="0" constraints="0" unique_strength="0"/>
+    <constraint exp_strength="0" field="city_sector_group" notnull_strength="0" constraints="0" unique_strength="0"/>
     <constraint exp_strength="0" field="group_id" notnull_strength="0" constraints="0" unique_strength="0"/>
     <constraint exp_strength="0" field="street_status" notnull_strength="0" constraints="0" unique_strength="0"/>
     <constraint exp_strength="0" field="dist_miles" notnull_strength="0" constraints="0" unique_strength="0"/>
@@ -764,8 +764,8 @@
     <constraint exp="" desc="" field="sn_id"/>
     <constraint exp="" desc="" field="en_id"/>
     <constraint exp="" desc="" field="dist"/>
-    <constraint exp="" desc="" field="city_portion"/>
-    <constraint exp="" desc="" field="city_portion_group"/>
+    <constraint exp="" desc="" field="city_sector"/>
+    <constraint exp="" desc="" field="city_sector_group"/>
     <constraint exp="" desc="" field="group_id"/>
     <constraint exp="" desc="" field="street_status"/>
     <constraint exp="" desc="" field="dist_miles"/>
@@ -787,8 +787,8 @@
       <column type="field" width="52" name="sn_id" hidden="0"/>
       <column type="field" width="54" name="en_id" hidden="0"/>
       <column type="field" width="118" name="dist" hidden="0"/>
-      <column type="field" width="91" name="city_portion" hidden="0"/>
-      <column type="field" width="129" name="city_portion_group" hidden="0"/>
+      <column type="field" width="91" name="city_sector" hidden="0"/>
+      <column type="field" width="129" name="city_sector_group" hidden="0"/>
       <column type="field" width="73" name="group_id" hidden="0"/>
       <column type="field" width="97" name="street_status" hidden="0"/>
       <column type="field" width="124" name="dist_miles" hidden="0"/>
@@ -825,8 +825,8 @@ def my_form_open(dialog, layer, feature):
   <featformsuppress>0</featformsuppress>
   <editorlayout>generatedlayout</editorlayout>
   <editable>
-    <field name="city_portion" editable="1"/>
-    <field name="city_portion_group" editable="1"/>
+    <field name="city_sector" editable="1"/>
+    <field name="city_sector_group" editable="1"/>
     <field name="dist" editable="1"/>
     <field name="dist_miles" editable="1"/>
     <field name="en_id" editable="1"/>
@@ -845,8 +845,8 @@ def my_form_open(dialog, layer, feature):
     <field name="street_status" editable="1"/>
   </editable>
   <labelOnTop>
-    <field name="city_portion" labelOnTop="0"/>
-    <field name="city_portion_group" labelOnTop="0"/>
+    <field name="city_sector" labelOnTop="0"/>
+    <field name="city_sector_group" labelOnTop="0"/>
     <field name="dist" labelOnTop="0"/>
     <field name="dist_miles" labelOnTop="0"/>
     <field name="en_id" labelOnTop="0"/>
@@ -865,8 +865,8 @@ def my_form_open(dialog, layer, feature):
     <field name="street_status" labelOnTop="0"/>
   </labelOnTop>
   <reuseLastValue>
-    <field name="city_portion" reuseLastValue="0"/>
-    <field name="city_portion_group" reuseLastValue="0"/>
+    <field name="city_sector" reuseLastValue="0"/>
+    <field name="city_sector_group" reuseLastValue="0"/>
     <field name="dist" reuseLastValue="0"/>
     <field name="dist_miles" reuseLastValue="0"/>
     <field name="en_id" reuseLastValue="0"/>
