@@ -56,18 +56,18 @@
             opacity: 0.9;
         }
 
-        .city_section_legend {
+        .city_sector_legend {
             text-align: left;
             line-height: 18px;
             color: #555;
         }
 
-        .city_section_legend h5 {
+        .city_sector_legend h5 {
             margin: 0 0 5px;
             color: #777;
         }
 
-        .city_section_legend i {
+        .city_sector_legend i {
             width: 18px;
             height: 5px;
             float: left;
@@ -83,7 +83,7 @@
 
     <div id="map"></div>
 
-    <script type="text/javascript" src="city_section_lines.geojson"></script>
+    <script type="text/javascript" src="city_sector_lines.geojson"></script>
     <script type="text/javascript" src="all_streets_diss_v2.geojson"></script>
 
 
@@ -209,7 +209,7 @@
                 } else {
                     // Fade out other segments
                     otherLayer.setStyle({
-                        opacity: 0.25,
+                        opacity: 0.1,
                         color: 'gray',
                         weight: 2
                     });
@@ -234,7 +234,7 @@
             });
         }
 
-        function getCitySectionColor(category) {
+        function getCitySectorColor(category) {
             const colors = {
                 'E': '#2de9ec',
                 'EC': '#1fa1a3',
@@ -250,20 +250,20 @@
             return colors[category] || "#000000"; // Default to black if category is unknown
         }
 
-        function styleCitySection(feature) {
+        function styleCitySector(feature) {
             return {
-                color: getCitySectionColor(feature.properties.cp),
+                color: getCitySectorColor(feature.properties.cp),
                 weight: 4,
                 opacity: 1
             };
         }
 
         // load the city sectors
-        const all_city_sections = L.geoJson(city_section_lines, {
+        const all_city_sectors = L.geoJson(city_sector_lines, {
             filter: function (feature) {
                 return feature.properties.dist == 40 && feature.properties.li == 0;
             },
-            style: styleCitySection
+            style: styleCitySector
         }
         ).addTo(map);
 
@@ -327,33 +327,29 @@
         legend.addTo(map);
 
         // build out the legend by coloring each segement        
-        const city_section_legend = L.control({ position: 'bottomleft' });
+        const city_sector_legend = L.control({ position: 'bottomleft' });
 
-        city_section_legend.onAdd = function (map) {
+        city_sector_legend.onAdd = function (map) {
 
-            const div = L.DomUtil.create('div', 'info city_section_legend');
+            const div = L.DomUtil.create('div', 'info city_sector_legend');
             // const sectors = ["C", "E", "N", "NE", "NW", "S", "SW", "W",];
             const sectors = ["NW", "N", "NE", "W", "NC", "E", "C", "EC", "SW", "S"];
-            const section_labels = [];
+            const sector_labels = [];
             let from, to;
 
             for (let i = 0; i < sectors.length; i++) {
                 from = sectors[i];
 
-                console.log(getCitySectionColor(from))
+                console.log(getCitySectorColor(from))
 
-                // section_labels.push(`<i style="background:${getCitySectionColor(from)}"></i> ${from}`);                
-                section_labels.push(`<i style="background:${getCitySectionColor(from)}"></i> ${from}`);
+                // sector_labels.push(`<i style="background:${getCitySectorColor(from)}"></i> ${from}`);                
+                sector_labels.push(`<i style="background:${getCitySectorColor(from)}"></i> ${from}`);
             }
-            div.innerHTML = `<strong>City Section</strong><br> ${section_labels.join('<br>')}`
+            div.innerHTML = `<strong>City Sector</strong><br> ${sector_labels.join('<br>')}`
             return div;
         };
 
-
-
-
-        city_section_legend.addTo(map);
-
+        city_sector_legend.addTo(map);
 
     </script>
 </body>
