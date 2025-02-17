@@ -93,6 +93,7 @@ S05_MISSING_IN_FILE_NAME = S04_MISSING_OUT_FILE_NAME
 
 S05_STREET_CONNECTION_CHECK_FILE_NAME = 'check_connections.gpkg'
 
+
 ################################################################################
 # STEP 6 CONSTANTS
 ################################################################################
