@@ -71,15 +71,19 @@ This image below is illustrative of many of the reasons for the discontinuties i
 * State routes (520 / HW 99) and I-5  
 
 ## Facts about the streets added:
-* 2,497 roads in the study area | 1,932 road miles: see these graphics for a comparison of [miles](/graphics/barplot_miles.png) and [road segments](/graphics/barplot_segment_count.png)  
-* 1,362 roads without discontinuities | 437 road miles  
-* 1,135 roads with discontinuities | 1,495 road miles  
-* 3,632 segments added across 1,135 roads | 832 miles   
-* Average of ~3.2 segments added per uniquely named road
-* Average added segment length: ~0.23 Miles
-* Median added segment length: ~443 Feet
-* Greatest number of segments added: [14 (1ST AVE NW, 30TH AVE S, 35TH AVE S, W RAYE ST)](/graphics/ex_04_most_added_segments.png)
-* Longest segment: ~5 Miles:  [7TH PL S (10 longest added segment)](/graphics/ex_05_longest_added_segments.png)
+* 2,453 uniquely named roads in the study area | 1,890 road miles: see these graphics for a comparison of [miles](/graphics/barplot_miles.png) and [road segments](/graphics/barplot_segment_count.png)  
+* 1,145 roads without discontinuities | 312 road miles  
+* 1,308 roads with discontinuities | 1,578 road miles  
+* 3,617 within-sector segments added across 1,103 roads | 833 miles   
+* 410 cross-sector segments added across 313 roads | 824 miles
+* Average of ~3.3 within-sector segments added per uniquely named road  
+* Average of ~1.3 cross-sector segments added  per uniquely named road
+* Average added within-sector segment length: ~0.23 Miles
+* Average added cross-sector segment length: ~2.0 Miles
+* Median added within-segment length: ~448 Feet
+* Median added cross-segment length: ~1.1 Miles
+* Greatest number of segments added: [14 1ST AVE NW](/graphics/ex_14_most_added_segments_v2.png)
+* Longest segment: ~5 Miles:  [7TH PL S (10 longest added segments)](/graphics/ex_15_longest_added_segments_v2.png)
 * Shortest segment: ~4 Feet: [SW Cloverdale ST ](/graphics/ex_06_shortest_segment.png)
 
 I particularly like the image of SW Cloverdale ST because it exemplifies how connectivity is in part a function of mode of travel. Clearly, a pedestrian can navigate around that barrier while a vechicle cannot.
