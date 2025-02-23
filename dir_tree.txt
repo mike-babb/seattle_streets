@@ -24,7 +24,6 @@
 │   ├── street_groups_working.xlsx
 │   ├── streets_to_remove.txt
 │   └── toss_snd.csv
-├── generate_dir_tree.sh
 ├── graphics
 │   ├── barplot_miles.png
 │   ├── barplot_segment_count.png
@@ -43,6 +42,8 @@
 │   ├── ex_13_north_capitol_hill_v2.png
 │   ├── ex_14_most_added_segments_v2.png
 │   ├── ex_15_longest_added_segments_v2.png
+│   ├── ex_16_10th_ave.png
+│   ├── ex_17_9th_ave.png
 │   ├── histogram_cs_ALL_streets.png
 │   ├── histogram_cs_AVE.png
 │   ├── histogram_cs_BLVD.png
@@ -70,5 +71,3 @@
 │   ├── seattle_streets.qgz
 │   └── street_layer_file.qml
 └── seattles_disconnected_streets_2024_11_20.pptx
-
-4 directories, 67 files
