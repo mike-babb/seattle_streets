@@ -82,15 +82,17 @@ This image below is illustrative of many of the reasons for the discontinuties i
 * Average added cross-sector segment length: ~2.0 Miles
 * Median added within-segment length: ~448 Feet
 * Median added cross-segment length: ~1.1 Miles
-* Greatest number of segments added: [14 1ST AVE NW](/graphics/ex_14_most_added_segments_v2.png)
-* Longest segment: ~5 Miles:  [7TH PL S (10 longest added segments)](/graphics/ex_15_longest_added_segments_v2.png)
-* Shortest segment: ~4 Feet: [SW Cloverdale ST ](/graphics/ex_06_shortest_segment.png)
+* Greatest number of within-sector segments added: [14 1ST AVE NW](/graphics/ex_14_most_added_segments_v2.png)
+* Longest within-sector segment: ~5 Miles:  [7TH PL S (10 longest added segments)](/graphics/ex_15_longest_added_segments_v2.png)
+* Shortest within-sector segment: ~4 Feet: [SW Cloverdale ST ](/graphics/ex_06_shortest_segment.png)
 
 I particularly like the image of SW Cloverdale ST because it exemplifies how connectivity is in part a function of mode of travel. Clearly, a pedestrian can navigate around that barrier while a vechicle cannot.
 
 Below is a histogram of the added streets:
-![histogram of added streets](/graphics/histogram_ALL_streets.png)
-This figure features a number of descriptive statistics showcasing the distribution of the length of the added segments. In general, most of the added segments are rather short, less than a quarter of a mile. Of all the added segments (3,632), 95% are less than one mile. `Step 04` creates this histogram and histograms for each street type and additional summary graphics.
+![histogram of within-sector added streets](/graphics/histogram_ws_ALL_streets.png)
+This figure features a number of descriptive statistics showcasing the distribution of the length of the added segments. In general, most of the added segments are rather short, less than a quarter of a mile. Of all the added segments (3,617), 95% are less than one mile. `Step 05` creates this histogram and histograms for each street type and additional summary graphics.
+
+See [histogram of within-sector added streets](/graphics/histogram_cs_ALL_streets.png) for histogram of the cross-sector added streets. In general, the cross-sector added streets are longer (2.0 miles, on average) because the added segments are cross water bodies. Those, there are some short cross-sector segment.
 
 # File Tree and File Description 
 ├── README.md - This file  

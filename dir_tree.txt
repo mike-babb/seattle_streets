@@ -1,7 +1,6 @@
 .
 ├── README.md
 ├── code
-│   ├── map_and_data_copy.sh
 │   ├── run_constants.py
 │   ├── step_01_import_export_street_data.ipynb
 │   ├── step_02_export_nodes_seattle_streets.ipynb
@@ -25,7 +24,7 @@
 │   ├── street_groups_working.xlsx
 │   ├── streets_to_remove.txt
 │   └── toss_snd.csv
-├── dir_tree.txt
+├── generate_dir_tree.sh
 ├── graphics
 │   ├── barplot_miles.png
 │   ├── barplot_segment_count.png
@@ -41,6 +40,9 @@
 │   ├── ex_10_woodlawn_ave_n.png
 │   ├── ex_11_galer_v2.png
 │   ├── ex_12_overall_v2.png
+│   ├── ex_13_north_capitol_hill_v2.png
+│   ├── ex_14_most_added_segments_v2.png
+│   ├── ex_15_longest_added_segments_v2.png
 │   ├── histogram_cs_ALL_streets.png
 │   ├── histogram_cs_AVE.png
 │   ├── histogram_cs_BLVD.png
@@ -69,4 +71,4 @@
 │   └── street_layer_file.qml
 └── seattles_disconnected_streets_2024_11_20.pptx
 
-4 directories, 65 files
+4 directories, 67 files
