@@ -1,6 +1,9 @@
 .
 ├── README.md
 ├── code
+│   ├── dir_tree_update.xlsx
+│   ├── dir_tree_update_working.xlsx
+│   ├── get_cute.ipynb
 │   ├── run_constants.py
 │   ├── step_01_import_export_street_data.ipynb
 │   ├── step_02_export_nodes_seattle_streets.ipynb
@@ -24,6 +27,7 @@
 │   ├── street_groups_working.xlsx
 │   ├── streets_to_remove.txt
 │   └── toss_snd.csv
+├── dir_tree_old.txt
 ├── graphics
 │   ├── barplot_miles.png
 │   ├── barplot_segment_count.png
@@ -63,7 +67,7 @@
 │   ├── histogram_ws_RD.png
 │   ├── histogram_ws_ST.png
 │   ├── histogram_ws_WAY.png
-│   └── seattle_sections.png
+│   └── seattle_sectors.png
 ├── maps
 │   ├── all_streets_diss_v2.geojson
 │   ├── city_sector_lines.geojson
@@ -71,3 +75,5 @@
 │   ├── seattle_streets.qgz
 │   └── street_layer_file.qml
 └── seattles_disconnected_streets_2024_11_20.pptx
+
+4 directories, 72 files

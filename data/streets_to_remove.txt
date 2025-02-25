@@ -1,18 +1,2 @@
 snd_id,description
-48389, short segment of SANDPOINT WAY NE
-49318, short segment of 5TH AVE NE
-49319, short segment of 5TH AVE NE
-49320, short segment of NE 97TH ST
-49303, short segment of ROOSEVELT WAY NE
-48807, short segment of ELLIOT AVE W
-49108, short segment of LAKE WASHINGTON BLVD S
-47784, short segment of 15TH AVE W
-47785, short segment of 15TH AVE W
 47787, short segment of 15TH AVE W
-26761, short segment of SW FLORIDA AVE
-50128, short segment of WEST MARGINAL WAY SW
-48148, short segment of 33RD AVE S
-49104, short segment of 60TH AVE SW
-48369, short segment of S PILGRAM ST
-48387, short segment of S PERRY ST
-

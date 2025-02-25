@@ -1,44 +1,72 @@
 ├── README.md - This file  
-├── code  
-│   ├── run_constants.py - file paths used throughout the notebooks.  
-│   ├── step_01_import_export_street_data.ipynb - import data and perform minimal formatting.  
-│   ├── step_02_export_nodes_seattle_streets.ipynb - curate the set of working streets, create the city sectors.  
-│   ├── step_03_find_discontinuities.ipynb - use NetworkX to identify discontinuities and create the added segments.  
-│   ├── step_04_prepare_graphs_and_stats.ipynb - conduct analyses on the added segments.  
-│   ├── step_05_drawn_an_nx_graph.ipynb - plot a NetworkX graph object of Galer. The plot changes everytime the code is run.  
-│   └── utils.py - functions used throughout the notebooks.  
-├── data  
-│   ├── Seattle_City_Limits_3136622578314448116.gpkg - Seattle City Limits downloaded from the City of Seattle. Only used in the qGIS map.  
-│   ├── Street_Network_Database_SND_5117857036965774451.gpkg - Stree Network downloaded from the City of Seattle. This is the starting file.  
-│   ├── Street_Network_Database_Seattle_Central_Streets.csv - A list of Street IDs curated using qGIS. Included for use in Step 02.  
-│   ├── blank_street_type_modified.xlsx - Roads with a manually created classifications. Used to ensure that every road has a classification (AVE, WAY, PL, for example.)  
-│   └── streets_to_remove.txt - a list (12, as of 2024/1/10) of short segments from the original data that can be removed. These are most likely erronneous data artifacts inadvertently left in during data processing by the City of Seattle. These were discovered by panning around a qGIS map visually identifying oddities. I have no doubt there are more to discover. In step 2, this file can be loaded and used to remove the erroneous segments.  
-├── graphics  
-│   ├── barplot_miles.png - barplot of the total miles by road type and road status.  
-│   ├── barplot_segment_count.png - barplot of the total number of segments by road type and road status.  
-│   ├── ex_01_galer.png - street segments added to Galer.    
-│   ├── ex_02_overall.png - street segments added across the City of Seattle.  
-│   ├── ex_03_north_capitol_hill.png - street segments added in north Capitol Hill.  
-│   ├── ex_04_most_added_segments.png - streets with the most added segments.  
-│   ├── ex_05_longest_added_segments.png - street with the longest added segments.  
-│   ├── ex_06_shortest_segment.png - screenshot of the shortest added segment.  
-│   ├── ex_07_51.png - street segments added for all roads named 51st.  
-│   ├── ex_08_15th_ave_w.png - erroneous segments for 15TH AVE W.  
-│   ├── ex_09_sw_florida_st.png - erroneous segments for SW FLORDIA ST.  
-│   ├── histogram_ALL_streets.png - histogram for all roads.  
-│   ├── histogram_AVE.png - histograms for roads of type: Avenue  
-│   ├── histogram_BLVD.png - histogram for roads of type: Boulevard  
-│   ├── histogram_CT.png - histogram for roads of type: Court  
-│   ├── histogram_DR.png - histogram for roads of type: Drive  
-│   ├── histogram_LN.png - histogram for roads of type: Lane  
-│   ├── histogram_PKWY.png - histogram for roads of type: Parkway  
-│   ├── histogram_PL.png - histogram for roads of type: Place  
-│   ├── histogram_RD.png - histogram for roads of type: Road  
-│   ├── histogram_ST.png - histogram for roads of type: Street  
-│   ├── histogram_WAY.png - histogram for roads of type: Way  
-│   └── seattle_sections.png - maps of the sectors in the City of Seattle.  
-├── maps  
-│   ├── all_streets_diss.geojson - continuous, discontinous, and added roads in geojson format.  
-│   ├── discontinuous_streets.html - interactive webmap featuring the continuous, discontinous, and added roads.  
-│   └── seattle_streets.qgz - qGIS map showcasing different aspects of the added street types. After running all notebooks, this layer should load.  
-└── seattles_discontinuous_streets_2024_11_20.pptx - Presentation I gave to the [CUGOS](https://cugos.org/) group on November 20, 2024 showcasing the motivation, findings, limitations and next steps of this project. This presentation encompasses a lot of the work as described in this `README.md` file.
+├── code -   
+│   ├── run_constants.py - file paths used throughout the notebooks.    
+│   ├── step_01_import_export_street_data.ipynb - import data and perform minimal formatting.    
+│   ├── step_02_export_nodes_seattle_streets.ipynb - curate the set of working streets, create the city sectors.    
+│   ├── step_03_merge_data.ipynb - merge data generated in steps 7 and 8   
+│   ├── step_04_find_discontinuities.ipynb - use NetworkX to identify discontinuities and create the added segments.    
+│   ├── step_05_prepare_graphs_and_stats.ipynb - conduct analyses on the added segments.    
+│   ├── step_06_draw_an_nx_graph.ipynb - plot a NetworkX graph object of Galer. The plot changes everytime the code is run.    
+│   ├── step_07_format_data_for_v2_plot_single_streets.ipynb - generate plots of individual streets for manual review  
+│   ├── step_08_format_data_for_v2_plot_street_groups.ipynb - generate plots of groups of streets of manual review  
+│   ├── step_09_compare_edge_differences.ipynb - compare differences between the added segments in v1 and v2  
+│   ├── step_10_update_central_streets.ipynb - curate the list of streets in the central business district  
+│   ├── step_11_prep_for_webmap.ipynb - create non-overlapping polygons and inner ring buffers and export data for use in a webmap  
+│   └── utils.py - functions used throughout the notebooks.    
+├── data -   
+│   ├── Seattle_City_Limits_3136622578314448116.gpkg - Seattle City Limits downloaded from the City of Seattle. Only used in the qGIS map.    
+│   ├── Street_Network_Database_SND_5117857036965774451.gpkg - Stree Network downloaded from the City of Seattle. This is the starting file.    
+│   ├── blank_street_type_working.xlsx - Roads with a manually created classifications. Used to ensure that every road has a classification (AVE, WAY, PL, for example.)    
+│   ├── city_sector.csv - list of SND and corresponding city sector   
+│   ├── city_sector_check_working.xlsx - list of combined city sectors and a manually updated sort order of the combination  
+│   ├── state_name.csv - list of state names, used in a trivial analysis in Step 7  
+│   ├── street_groups_working.xlsx - list of streets and manually curated street groups  
+│   ├── streets_to_remove.txt - a list (1, as of 2025/2/23) of short segments from the original data that can be removed. These are most likely erronneous data artifacts inadvertently left in during data processing by the City of Seattle. These were discovered by panning around a qGIS map visually identifying oddities. I have no doubt there are more to discover. In step 2, this file can be loaded and used to remove the erroneous segments.  Setting the segment_type = 1 removes a lot of stubby streets as well.  
+│   └── toss_snd.csv - additional street segments that can be removed from processing, used in step 10  
+├── graphics -   
+│   ├── barplot_miles.png - barplot of the total miles by road type and road status.    
+│   ├── barplot_segment_count.png - barplot of the total number of segments by road type and road status.    
+│   ├── ex_01_galer.png - v2 street segments added to Galer.      
+│   ├── ex_02_overall.png - v2 street segments added across the City of Seattle.    
+│   ├── ex_03_north_capitol_hill.png - v2 street segments added in north Capitol Hill.    
+│   ├── ex_04_most_added_segments.png - v2 streets with the most added segments.    
+│   ├── ex_05_longest_added_segments.png - v2 street with the longest added segments.    
+│   ├── ex_06_shortest_segment.png - screenshot of the shortest added segment.    
+│   ├── ex_07_51.png - v2 street segments added for all roads named 51st.    
+│   ├── ex_08_15th_ave_w.png - erroneous segments on 15TH AVE W.    
+│   ├── ex_09_sw_florida_st.png - erroneous segments on SW FLORDIA ST.    
+│   ├── ex_10_woodlawn_ave_n.png - v1 connectivity for Woodlawn  
+│   ├── ex_11_galer_v2.png - v2 connectivity for galer  
+│   ├── ex_12_overall_v2.png - v2 overall connectivity  
+│   ├── ex_13_north_capitol_hill_v2.png - v2 connectivity for north capitol hill  
+│   ├── ex_14_most_added_segments_v2.png - v2 connectivity for most added segments  
+│   ├── ex_15_longest_added_segments_v2.png - v2 connectivity for longest added segments  
+│   ├── ex_16_10th_ave.png - v2 connectivity for 10th ave  
+│   ├── ex_17_9th_ave.png - v2 connectivity for 9th ave  
+│   ├── histogram_cs_ALL_streets.png - histogram for all cross-sector added segments   
+│   ├── histogram_cs_AVE.png - histogram of  cross-sector added segments for streets of type AVE  
+│   ├── histogram_cs_BLVD.png - histogram of  cross-sector added segments for streets of type BLVD  
+│   ├── histogram_cs_CT.png - histogram of  cross-sector added segments for streets of type CT  
+│   ├── histogram_cs_DR.png - histogram of  cross-sector added segments for streets of type DR  
+│   ├── histogram_cs_RD.png - histogram of  cross-sector added segments for streets of type RD  
+│   ├── histogram_cs_ST.png - histogram of  cross-sector added segments for streets of type ST  
+│   ├── histogram_cs_WAY.png - histogram of  cross-sector added segments for streets of type WAY  
+│   ├── histogram_ws_ALL_streets.png - histogram of all within-sector added segments   
+│   ├── histogram_ws_AVE.png - histogram of within-sector added segments for streets of type AVE  
+│   ├── histogram_ws_BLVD.png - histogram of within-sector added segments for streets of type BLVD  
+│   ├── histogram_ws_CT.png - histogram of within-sector added segments for streets of type CT  
+│   ├── histogram_ws_DR.png - histogram of within-sector added segments for streets of type DR  
+│   ├── histogram_ws_LN.png - histogram of within-sector added segments for streets of type LN  
+│   ├── histogram_ws_PKWY.png - histogram of within-sector added segments for streets of type PKWY  
+│   ├── histogram_ws_PL.png - histogram of within-sector added segments for streets of type PL  
+│   ├── histogram_ws_RD.png - histogram of within-sector added segments for streets of type RD  
+│   ├── histogram_ws_ST.png - histogram of within-sector added segments for streets of type ST  
+│   ├── histogram_ws_WAY.png - histogram of within-sector added segments for streets of type WAY  
+│   └── seattle_sections.png - maps of the sectors in the City of Seattle.    
+├── maps -   
+│   ├── all_streets_diss_v2.geojson - continuous, discontinous, and added roads in geojson format.    
+│   ├── city_sector_lines.geojson - city sector outlines for use in the webmap  
+│   ├── discontinuous_streets_v2.html - interactive webmap featuring the continuous, discontinous, and added roads.    
+│   ├── seattle_streets.qgz - qGIS map showcasing different aspects of the added street types. After running all notebooks, this layer should load.    
+│   └── street_layer_file.qml - qGIS layer file for easy street symbology  
+└── seattles_disconnected_streets_2024_11_20.pptx - Presentation I gave to the [CUGOS](https://cugos.org/) group on November 20, 2024 showcasing the motivation, findings, limitations and next steps of this project. This presentation encompasses a lot of the work as described in this `README.md` file.  
