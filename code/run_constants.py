@@ -41,10 +41,13 @@ S02_BST_IN_FILE_NAME = 'blank_street_type_working.xlsx'
 S02_SND_FULL_OUT_FILE_NAME = 'Street_Network_Database_Seattle_Full.gpkg'
 
 # STEP 2: INPUT STREET NETWORK ID STREETS IN THE CITY CENTRAL PART OF THE CITY - MANUALLY CREATED USING qGIS
-S02_CENTRAL_STREETS_IN_FILE_NAME = 'city_portion.csv'
+S02_CENTRAL_STREETS_IN_FILE_NAME = 'city_sector.csv'
 
-# STEP 2: OUTPUT CITY SECTIONS AS CREATED BY A CONVEX HULL OPERATION
-S02_CITY_SECTIONS_OUT_FILE_NAME = 'city_sections.gpkg'
+# STEP 2: OUTPUT CITY SECTORS AS CREATED BY A CONVEX HULL AND CONCAVE HULL OPERATION
+S02_CITY_SECTORS_OUT_FILE_NAME = 'city_sectors.gpkg'
+
+# STEP 2: OUTPUT CITY SECTORS AS CREATED BY A CONVEX HULL AND CONCAVE HULL OPERATION - 
+S02_CITY_SECTORS_LINES_OUT_FILE_NAME = 'city_sectors_lines.gpkg'
 
 # STEP 2: OUTPUT STREET NETWORK - THE WORKING STREETS IN THE CITY OF SEATTLE
 S02_SND_WORKING_OUT_FILE_NAME = 'Street_Network_Database_Seattle_working.gpkg'
@@ -88,6 +91,9 @@ S05_ANALYSIS_OUT_FILE_NAME = 'street_analysis.xlsx'
 # STEP 5: INPUT STREET NETWORK
 S05_MISSING_IN_FILE_NAME = S04_MISSING_OUT_FILE_NAME
 
+S05_STREET_CONNECTION_CHECK_FILE_NAME = 'check_connections.gpkg'
+
+
 ################################################################################
 # STEP 6 CONSTANTS
 ################################################################################
@@ -99,19 +105,40 @@ S06_MISSING_IN_FILE_NAME = S04_MISSING_OUT_FILE_NAME
 # STEP 7 CONSTANTS
 ################################################################################
 
-# STEP 6: STREET GROUP EXCEL FILE NAME
+# STEP 7: STREET GROUP EXCEL FILE NAME
 S07_STREET_GROUP_OUT_FILE_NAME = 'street_groups.xlsx'
 
-# STEP 6: INDIVIDUAL PLOTS OUTPUT PATH
+# STEP 7: INDIVIDUAL PLOTS OUTPUT PATH
 S07_PLOT_OUTPUT_FILE_PATH = '../../../project/seattle_streets/print/individual_streets'
 
 ################################################################################
 # STEP 8 CONSTANTS
 ################################################################################
 
-# STEP 8: CITY PORTION GROUP CHECK OUTPUT PATH
-S08_CPG_OUTPUT_FILE_NAME = 'city_portion_check_working.xlsx'
+# STEP 8: CITY SECTOR GROUP CHECK OUTPUT PATH
+S08_CPG_OUTPUT_FILE_NAME = 'city_sector_check_working.xlsx'
 
 # STEP 8: CITY PORITON GROUP PLOTS
-S08_PLOT_OUTPUT_FILE_PATH_CITY_PORTION_GROUPS = '../../../project/seattle_streets/print/city_portion_groups'
+S08_PLOT_OUTPUT_FILE_PATH_CITY_SECTOR_GROUPS = '../../../project/seattle_streets/print/city_sector_groups'
+
+################################################################################
+# STEP 9 CONSTANTS
+################################################################################
+
+################################################################################
+# STEP 10 CONSTANTS
+################################################################################
+
+################################################################################
+# STEP 11 CONSTANTS
+################################################################################
+S11_NON_OVERLAPPING_CITY_SECTORS_FILE_NAME = 'city_sectors_non_overlapping.gpkg'
+
+S11_NON_OVERLAPPING_CITY_SECTORS_POLY_INNER_RING_BUFFER_FILE_NAME = 'city_sectors_non_overlapping_poly.gpkg'
+
+S11_NON_OVERLAPPING_CITY_SECTORS_LINE_INNER_RING_BUFFER_FILE_NAME = 'city_sectors_non_overlapping_line.gpkg'
+
+
+
+
 
