@@ -27,7 +27,7 @@ The streets with the name Galer differ based on street prefix and street type. E
 Seattle is divided into eight sectors, basesd on compass directions. The eight sectors can be seen in the image below.  
 <img src="./graphics/seattle_sectors.png" alt="seattle sectors" width="1000" height="530"/>  
 
-The map on the left features the sectors identified by direction prefix or direction suffix. Roads without a direction prefix or suffix are labeled as "No direction". The majority of roads without a direction prefix or direction suffix are located in the central business district. Throughout Seattle, streets run east/west and avenues run north/south. In the central business district, both streets and avenues are directionless. North of Denny way, streets are directionless while avenues are not. East of Broadway, streets feature a direction while avenues do not. Note that throughout the city, there are streets without a direction prefix or suffix, but this is limited to specific roads and road types (trails and interstates, for example). The image on the right is the convex hull surrounding each directional prefix / suffix (after removing certain roads and types). Before starting this project, I had a general idea about the extents of the city sectors. These maps was helpful in diagnosing why some roads were being connected and some where not. [Step 01](/code/step_01_import_export_street_data.ipynb) and [step 02](/code/step_02_export_nodes_seattle_streets.ipynb) identifies the city sectors on the streets and creates the convex hulls. And new for version 2.0, I create concave hulls in step 02 and I create non-overlapping sectors using these concave hulls in [step 11](/code/step_11_prep_for_webmap.ipynb)  
+The map on the left features the sectors identified by direction prefix or direction suffix. Roads without a direction prefix or suffix are labeled as "No direction". The majority of roads without a direction prefix or direction suffix are located in the central business district. Throughout Seattle, streets run east/west and avenues run north/south. In the central business district, both streets and avenues are directionless. North of Denny way, streets are directionless while avenues are not. East of Broadway, streets feature a direction while avenues do not. Note that throughout the city, there are streets without a direction prefix or suffix, but this is limited to specific roads and road types (trails and interstates, for example). The image on the right is the convex hull surrounding each directional prefix / suffix (after removing certain roads and types). Before starting this project, I had a general idea about the extents of the city sectors. These maps was helpful in diagnosing why some roads were being connected and some where not. [Step 01](/code/step_01_import_export_street_data.ipynb) and [step 02](/code/step_02_export_nodes_seattle_streets.ipynb) identifies the city sectors on the streets and creates the convex hulls. And new for version 2.0, I create concave hulls in step 02 and I create non-overlapping sectors using these concave hulls in [step 11](/code/step_11_prep_for_webmap.ipynb).  
 
 # Data
 The data powering this analysis is a single GeoPackage from the [City of Seattle](https://data-seattlecitygis.opendata.arcgis.com/datasets/783fd63545304bdf9d3c5f2065751614_0/explore).  
@@ -66,7 +66,7 @@ In `step 10`, I perform some data analysis to better curate the list of streets 
 Throughout this project I used this [qGIS map](./maps/seattle_streets.qgz) file to showcase many aspects of the added streets. This map is fully symbolized and after running all of the notebooks, the layers should load appropriately. The image below is an overall picture of the addded streets. Again, the red lines are the added streets joining discontinuous segements and the black lines are the existing streets. In v2.0, the blue lines are the lines connecting streets that cross the different city sectors: a street crossing from the West sector of the city to the East sector of the city.  
 <img src="./graphics/ex_12_overall_v2.png" alt="overall" width="500" height="443"/>
 
-At the scale of the city - and due to the number of added street connections - it's hard to get a sense of the number of added streets. This image below is centered on north Capitol Hill and showcases many street discontinuities (check out Galer from West to East, in particular).  
+At the scale of the city - and due to the number of added street connections - it's hard to get a sense of the number of added streets. This image below is centered on north Capitol Hill and showcases many within-sector street discontinuities (check out Galer from West to East, in particular).  
 <img src="./graphics/ex_03_north_capitol_hill.png" alt="North Capitol Hill" width="500" height="267"/>
 
 This image is illustrative of many of the reasons for the discontinuties in Seattle:  
@@ -126,7 +126,7 @@ See this [file](/graphics/histogram_cs_ALL_streets.png) for a histogram of the c
 │   ├── state_name.csv - list of state names, used in a trivial analysis in Step 07.  
 │   ├── street_groups_working.xlsx - list of streets and manually curated street groups.  
 │   ├── streets_to_remove.txt - a list (1, as of 2025/2/23) of short segments from the original data that can be removed. This is most likely an erronneous data artifact inadvertently left in during data processing by the City of Seattle. This were discovered by panning around a qGIS map visually identifying oddities. I have no doubt there are more to discover. In step 02, this file can be loaded and used to remove the erroneous segments. In v1, there were a lot more of these stubby segments. In v2, I set the `segment_type = 1` and removed all of the stubby streets as well.  
-│   └── toss_snd.csv - additional street segments that can be removed from processing, used in step 10  
+│   └── toss_snd.csv - additional street segments that can be removed from processing, used in step 10  .
 ├── graphics  
 │   ├── barplot_miles.png - barplot of the total miles by road type and road status.  
 │   ├── barplot_segment_count.png - barplot of the total number of segments by road type and road status.  
@@ -178,21 +178,15 @@ See this [file](/graphics/histogram_cs_ALL_streets.png) for a histogram of the c
 
 # Future work
 Making v1.0 of this repo publically availably was my first goal. My next two goals are as follows:  
-1. ~~Create an interactive webmap to embed the results.~~ 
-[Click here for v2 of an interactive webmap](https://mike-babb.github.io/media/discontinuous_streets_v2.html)
-[Click here for v1 of an interactive webmap](https://mike-babb.github.io/media/discontinuous_streets.html)
+1. ~~Create an interactive webmap to embed the results.~~  
+[Click here for v2 of an interactive webmap](https://mike-babb.github.io/media/discontinuous_streets_v2.html)  
+[Click here for v1 of an interactive webmap](https://mike-babb.github.io/media/discontinuous_streets.html)  
 
-2. ~~Ensure connectivity is street-end to street-end.~~ [nx.k_edge_augmentation()](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.connectivity.edge_augmentation.k_edge_augmentation.html) is phenomenal and very fast, especially when a pool of candidate edges of supplied. Those weight of the candidate edges is the straigt-line distance between any two nodes. Sometimes, the shortest edge connecting two discontinuous street segments is not street-end to street-end but sometimes street-end to mid-point. This is rare, but it has been observed upon visual inspection. This image showcases this phenomenon: 
+2. ~~Ensure connectivity is street-end to street-end.~~ *v2.0 features street-end to street-end connectivity!*   [nx.k_edge_augmentation()](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.connectivity.edge_augmentation.k_edge_augmentation.html) is phenomenal and very fast, especially when a pool of candidate edges of supplied. Those weight of the candidate edges is the straigt-line distance between any two nodes. Sometimes, the shortest edge connecting two discontinuous street segments is not street-end to street-end but sometimes street-end to mid-point. This is rare, but it has been observed upon visual inspection. This image showcases this phenomenon:  
 <img src="./graphics/ex_10_woodlawn_ave_n.png" alt="woodlawn" width="500" height="528"/>  
-
 One way to fix this is to use the [nx.degree_centrality](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.centrality.degree_centrality.html#networkx.algorithms.centrality.degree_centrality) to further winnow down the list of nodes that can be used to form connections between disconnected segments. The more connected the node, the more "central" is the node. In general, the nodes at the end of the street are going to be less connected than the nodes in the center of the road. Definitely something to incorporate in v2.0.  
 
-*v2.0 features street-end to street-end connectivity!*
-
-3. ~~Connect streets based on name, not just street type.~~ While it's easy to see that a case could be made to connect Galer across the city, other streets are less obvious. For example, there are many streets with the name '51st'. The image below showcases this phenomenon:  
-
-<img src="./graphics/ex_07_51.png" alt="51st" width="500" height="648"/>
-
+3. ~~Connect streets based on name, not just street type.~~  *v2.0 features cross-sector connectivity!*  While it's easy to see that a case could be made to connect Galer across the city, other streets are less obvious. For example, there are many streets with the name '51st'. The image below showcases this phenomenon:  
+<img src="./graphics/ex_07_51.png" alt="51st" width="500" height="648"/>  
 There are five streets that include 51st in the name: NE 51st ST, 51st AVE NE, 51st AVE SW, and 51st AVE S, and 51st PL S. (Only 4 are shown at this scale; 51st PL S is obscured by 51st AVE S.) Should 51st AVE S and 51st AVE NE be connected? Perhaps! Upon visual inspection, the two streets align to a quasi-grid. But then, so do most of the streets in Seattle. Version 2.0 will feature connections between streets that should mostly likely be connected. For example, W GALER ST will connect to GALER ST which will connect to E GALER ST. The best way to accomplish this is through a combination programmatic identification and manual review to create the template for the street connections. 
 
-*v2.0 features cross-sector connectivity!*
