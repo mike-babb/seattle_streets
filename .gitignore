@@ -55,6 +55,9 @@ notes.md
 notes_todo.md
 map_and_data_copy.sh
 generate_dir_tree.sh
+get_cute.ipynb
+map_and_data_copy.sh
+various/
 
 # machine specific configuation files
 .vscode/launch.json
