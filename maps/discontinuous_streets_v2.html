@@ -116,7 +116,7 @@
             <b><span style="color: #33a02c">Continuous:</span></b> ${props.continuousLength.toFixed(2)} miles | ${props.continuousSegments.toFixed(0)} segments<br />
             <b><span style="color: #000000">Discontinuous:</span></b> ${props.discontinuousLength.toFixed(2)} miles | ${props.discontinuousSegments.toFixed(0)} segments<br />          
             <b><span style="color: #ca0020">Within-sector Added:</span></b> ${props.addedLengthWS.toFixed(2)} miles | ${props.addedSegmentsWS.toFixed(0)} segments<br />
-            <b><span style="color: #1a4bed">Inter-sector Added:</span></b> ${props.addedLengthIS.toFixed(2)} miles | ${props.addedSegmentsIS.toFixed(0)} segments
+            <b><span style="color: #1a4bed">Cross-sector Added:</span></b> ${props.addedLengthIS.toFixed(2)} miles | ${props.addedSegmentsIS.toFixed(0)} segments
         `;
             } else {
                 this._div.innerHTML = '<h4>Street Information</h4>Hover over a segment';
@@ -143,7 +143,7 @@
             return st == 0 ? `<span style="color: #33a02c">CONTINUOUS STREET</span>` :
                 st == 1 ? `<span style="color: #000000">DISCONTINUOUS STREET</span>` :
                     st == 2 ? `<span style="color: #000000">WITHIN-SECTOR ADDED STREET STREET</span>` :
-                        `<span style="color: #1a4bed">INTER-SECTOR ADDED STREET</span>`;
+                        `<span style="color: #1a4bed">CROSS-SECTOR ADDED STREET</span>`;
         }
 
         // styles a feature - a line segment - based on ss
@@ -309,7 +309,7 @@
         legend.onAdd = function (map) {
 
             const div = L.DomUtil.create('div', 'info legend');
-            const grades = ['Continuous', 'Discontinuous', 'Within-Sector Added', 'Inter-Sector Added'];
+            const grades = ['Continuous', 'Discontinuous', 'Within-Sector Added', 'Cross-Sector Added'];
             const labels = [];
             let from, to;
 
