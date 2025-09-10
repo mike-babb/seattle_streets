@@ -8,8 +8,8 @@
 How many streets in Seattle are discontinuous? Or, "How frequently do roads in Seattle, start, stop, and resume?" This typically looks like a road running for a few blocks, terminating, and then resuming a few blocks later. A prime example is Galer Street. Galer street is an east-west street that runs through the neighborhoods of Magnolia, Queen Anne, Capitol Hill, and Madison Park.  
 <img src="./graphics/ex_11_galer_v2.png" alt="galer" width="1000" height="300"/>
 
-[SEE THIS PAGE FOR v2.0 OF AN INTERACTIVE MAP OF THE ADDED STREETS](https://mike-babb.github.io/media/discontinuous_streets_v2.html)  
-[SEE THIS PAGE FOR v1.0 OF AN INTERACTIVE MAP OF THE ADDED STREETS](https://mike-babb.github.io/media/discontinuous_streets.html)  
+[SEE THIS PAGE FOR v2.0 OF AN INTERACTIVE MAP OF THE ADDED STREETS](https://mike-babb.github.io/media/discontinuous_streets/discontinuous_streets_v2.html)  
+[SEE THIS PAGE FOR v1.0 OF AN INTERACTIVE MAP OF THE ADDED STREETS](https://mike-babb.github.io/media/discontinuous_streetsdiscontinuous_streets.html)  
 
 The streets colored black are the existing streets with discontinuities. The red lines are the "missing segments" joining the end of one section of a street to another. (Note: this color scheme of red and black is used throughout this project in the graphics and maps.) Galer is also separated into different streets based on city directional sector and road type. Accordingly, there are five streets that feature the name "Galer" and three out of those five streets feature a discontinuity. (The number of discontinuities is equal to the number of segments minus one. A segment is a portion of a street that runs for any length.) The table below summarizes the number of discontinuities in each street with 'Galer' in its name.
 
