@@ -1,0 +1,22 @@
+'C': '#5b5b5b'
+'E': '#2de9ec'
+'N': '#8c4cc8'
+'NE': '#38CF60'
+'NW': '#1a4bed'
+'S': '#e6b71c'
+'SW': '#cc2b28'
+'W': '#ea1cb3'
+'EC': '#1fa1a3'
+'NC': '#542e78'
+
+
+#5b5b5b
+#2de9ec
+#8c4cc8
+#38CF60
+#1a4bed
+#e6b71c
+#cc2b28
+#ea1cb3
+#1fa1a3
+#542e78

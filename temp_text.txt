@@ -1,6 +1,0 @@
-v2.0 of my Seattle street connectivity project is live! Now featuring cross-sector connectivity and city sector boundaries
-#python #networkx #geopandas #geospatial #webmap
-
-https://mike-babb.github.io/media/discontinuous_streets_v2.html
-
-
