@@ -3,7 +3,7 @@
 import os
 
 # INPUT FILE PATH
-INPUT_FILE_PATH = '../data' 
+INPUT_FILE_PATH = '../data'
 
 # OUTPUT FILE PATH
 OUTPUT_FILE_PATH = '../../../project/seattle_streets/data'
@@ -37,6 +37,9 @@ S02_NODE_OUT_FILE_NAME = 'Street_Network_Nodes.gpkg'
 # STEP 2: INPUT EXCEL FILE WITH THE MANUALLY UPDATED STREET CLASSIFICATIONS
 S02_BST_IN_FILE_NAME = 'blank_street_type_working.xlsx'
 
+# STEP 2: OUTPUT STREET NETWORK - STREETS AFTER PERFORMING MINOR FORMATTING
+S02_SND_COMPLETE_OUT_FILE_NAME = 'Street_Network_Database_Complete_Revised.gpkg'
+
 # STEP 2: OUTPUT STREET NETWORK - ALL STREETS IN SEATTLE
 S02_SND_FULL_OUT_FILE_NAME = 'Street_Network_Database_Seattle_Full.gpkg'
 
@@ -46,7 +49,7 @@ S02_CENTRAL_STREETS_IN_FILE_NAME = 'city_sector.csv'
 # STEP 2: OUTPUT CITY SECTORS AS CREATED BY A CONVEX HULL AND CONCAVE HULL OPERATION
 S02_CITY_SECTORS_OUT_FILE_NAME = 'city_sectors.gpkg'
 
-# STEP 2: OUTPUT CITY SECTORS AS CREATED BY A CONVEX HULL AND CONCAVE HULL OPERATION - 
+# STEP 2: OUTPUT CITY SECTORS AS CREATED BY A CONVEX HULL AND CONCAVE HULL OPERATION -
 S02_CITY_SECTORS_LINES_OUT_FILE_NAME = 'city_sectors_lines.gpkg'
 
 # STEP 2: OUTPUT STREET NETWORK - THE WORKING STREETS IN THE CITY OF SEATTLE
@@ -139,6 +142,21 @@ S11_NON_OVERLAPPING_CITY_SECTORS_POLY_INNER_RING_BUFFER_FILE_NAME = 'city_sector
 S11_NON_OVERLAPPING_CITY_SECTORS_LINE_INNER_RING_BUFFER_FILE_NAME = 'city_sectors_non_overlapping_line.gpkg'
 
 
+################################################################################
+# RECODE VALUES
+################################################################################
 
+# add text descriptions for the street type categories
+street_status_dict = {0: 'continuous_street',
+                      1: 'discontinuous_street',
+                      2: 'added_street: within-sector',
+                      3: 'added_street: cross-sector'}
 
-
+# add text descriptions for the street type categories
+extended_street_status_dict = {'0_1': 'continuous_street',
+                               '1_1': 'discontinuous_street',
+                               '2_0': 'added_street: within-sector, not existing',
+                               '2_1': 'added_street: within-sector, existing',
+                               '3_0': 'added_street: cross-sector, not existing',
+                               '3_1': 'added_street: cross-sector, existing'
+                               }

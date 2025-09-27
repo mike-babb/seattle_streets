@@ -1,2 +1,4 @@
 snd_id,description
 47787, short segment of 15TH AVE W
+48499, short segment of 18TH AVE S
+48119, short segment of CECIL AVE S
