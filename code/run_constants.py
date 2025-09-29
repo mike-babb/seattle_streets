@@ -153,10 +153,10 @@ street_status_dict = {0: 'continuous_street',
                       3: 'added_street: cross-sector'}
 
 # add text descriptions for the street type categories
-extended_street_status_dict = {'0_1': 'continuous_street',
-                               '1_1': 'discontinuous_street',
-                               '2_0': 'added_street: within-sector, not existing',
-                               '2_1': 'added_street: within-sector, existing',
-                               '3_0': 'added_street: cross-sector, not existing',
-                               '3_1': 'added_street: cross-sector, existing'
-                               }
+street_status_reclass_dict = {'0_0': 'continuous_street',
+                              '1_0': 'discontinuous_street',
+                              '2_0': 'added_street: within-sector, not existing',
+                              '2_1': 'added_street: within-sector, existing',
+                              '3_0': 'added_street: cross-sector, not existing',
+                              '3_1': 'added_street: cross-sector, existing'
+                              }
