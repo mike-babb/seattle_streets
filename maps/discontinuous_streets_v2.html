@@ -148,7 +148,7 @@
         function getStreetTypeDescription(st) {
             return st == 0 ? `<span style="color: #33a02c">CONTINUOUS STREET</span>` :
                 st == 1 ? `<span style="color: #000000">DISCONTINUOUS STREET</span>` :
-                    st == 2 ? `<span style="color: #000000">WITHIN-SECTOR ADDED STREET STREET</span>` :
+                    st == 2 ? `<span style="color: #ca0020">WITHIN-SECTOR ADDED STREET STREET</span>` :
                         `<span style="color: #1a4bed">CROSS-SECTOR ADDED STREET</span>`;
         }
 
@@ -315,7 +315,8 @@
         legend.onAdd = function (map) {
 
             const div = L.DomUtil.create('div', 'info legend');
-            const grades = ['Continuous', 'Discontinuous', 'Within-Sector Added', 'Cross-Sector Added'];
+            const grades = ['Continuous', 'Discontinuous', 'Within-Sector Added',
+             'Cross-Sector Added'];
             const labels = [];
             let from, to;
 

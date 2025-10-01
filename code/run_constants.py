@@ -96,6 +96,8 @@ S05_MISSING_IN_FILE_NAME = S04_MISSING_OUT_FILE_NAME
 
 S05_STREET_CONNECTION_CHECK_FILE_NAME = 'check_connections.gpkg'
 
+S05_RANKED_STREETS_FILE_NAME = 'ranked_streets.gpkg'
+
 
 ################################################################################
 # STEP 6 CONSTANTS
@@ -140,6 +142,32 @@ S11_NON_OVERLAPPING_CITY_SECTORS_FILE_NAME = 'city_sectors_non_overlapping.gpkg'
 S11_NON_OVERLAPPING_CITY_SECTORS_POLY_INNER_RING_BUFFER_FILE_NAME = 'city_sectors_non_overlapping_poly.gpkg'
 
 S11_NON_OVERLAPPING_CITY_SECTORS_LINE_INNER_RING_BUFFER_FILE_NAME = 'city_sectors_non_overlapping_line.gpkg'
+
+S11_OVERLAPPING_CITY_SECTORS_POLY_INNER_RING_BUFFER_FILE_NAME = 'city_sectors_overlapping_poly.gpkg'
+
+S11_OVERLAPPING_CITY_SECTORS_LINE_INNER_RING_BUFFER_FILE_NAME = 'city_sectors_overlapping_line.gpkg'
+
+S11_CITY_SECTOR_LINES_JSON_FILE_NAME = 'city_sector_lines.geojson'
+
+S11_STREETS_JSON_FILE_NAME = 'all_streets_diss_v2.geojson'
+
+
+################################################################################
+# STEP 12 CONSTANTS
+################################################################################
+
+################################################################################
+# STEP 13 CONSTANTS
+################################################################################
+# STEP 13: VERSION 3 OF THE ADDED SEGMENTS
+S13_MISSING_OUT_FILE_NAME = 'missing_segments_v3.gpkg'
+
+################################################################################
+# STEP 14 CONSTANTS
+################################################################################
+# STEP 14: VERSION 3 OF THE ADDED SEGMENTS FOR A WEBMAP
+S14_STREETS_JSON_FILE_NAME = 'all_streets_diss_v3.geojson'
+
 
 
 ################################################################################

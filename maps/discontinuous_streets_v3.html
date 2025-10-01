@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Seattle's discontinuous streets</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .leaflet-container {
+            height: 400px;
+            width: 600px;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+
+    <style>
+        #map {
+            width: 99%;
+            height: 93%;
+        }
+
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            border-radius: 5px;
+        }
+
+        .info h4 {
+            margin: 0 0 5px;
+            color: #777;
+        }
+
+        .legend {
+            text-align: left;
+            line-height: 18px;
+            color: #555;
+        }
+
+        .legend i {
+            width: 18px;
+            height: 5px;
+            float: left;
+            margin-right: 8px;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        .city_sector_legend {
+            text-align: left;
+            line-height: 18px;
+            color: #555;
+        }
+
+        .city_sector_legend h5 {
+            margin: 0 0 5px;
+            color: #777;
+        }
+
+        .city_sector_legend i {
+            width: 18px;
+            height: 5px;
+            float: left;
+            margin-right: 8px;
+            margin-top: 5px;
+            opacity: 0.9;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="map"></div>
+
+    <script type="text/javascript" src="city_sector_lines.geojson"></script>
+    <script type="text/javascript" src="all_streets_diss_v3.geojson"></script>
+
+    <script>
+        // Initialize the map
+        const map = L.map('map').setView([47.6100, -122.3347], 11);
+
+        // Add a base map layer from openstreetmap
+        // const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //     maxZoom: 19,
+        //     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        // }).addTo(map);
+
+        const tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        // control that shows state info on hover
+        const info = L.control();
+
+        info.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+
+        // function that updates the box with information about the roads
+        info.update = function (props) {
+            if (props) {
+                this._div.innerHTML = `
+            <h4>Street Information</h4>
+            <b><u>${props.osntg}</u></b><br />
+            <b>Total Length:</b> ${props.totalLength.toFixed(2)} miles | ${props.totalSegments.toFixed(0)} segments<br />
+            <b><span style="color: #33a02c">Continuous:</span></b> ${props.continuousLength.toFixed(2)} miles | ${props.continuousSegments.toFixed(0)} segments<br />
+            <b><span style="color: #000000">Discontinuous:</span></b> ${props.discontinuousLength.toFixed(2)} miles | ${props.discontinuousSegments.toFixed(0)} segments<br />          
+            <b><span style="color: #ca0020">Within-sector Added:</span></b> ${props.addedLengthWS.toFixed(2)} miles | ${props.addedSegmentsWS.toFixed(0)} segments<br />
+            <b><span style="color: #1a4bed">Cross-sector Added:</span></b> ${props.addedLengthCS.toFixed(2)} miles | ${props.addedSegmentsCS.toFixed(0)} segments<br />
+            <b><span style="color: #ff7f00">Within-sector Added Overlapping:</span></b> ${props.addedLengthWSO.toFixed(2)} miles | ${props.addedSegmentsWSO.toFixed(0)} segments<br />
+            <b><span style="color: #542e78">Cross-sector Added Overlapping:</span></b> ${props.addedLengthCSO.toFixed(2)} miles | ${props.addedSegmentsCSO.toFixed(0)} segments
+        `;
+            } else {
+                this._div.innerHTML = '<h4>Street Information</h4>Hover over a segment';
+            }
+        };
+
+
+        info.addTo(map);
+
+        // get color depending on street status
+        function getColor(st) {
+            // "#33a02c": green 0
+            // "#000000": black 1
+            // "#ca0020": red 2
+            // "#1a4bed": blue 3
+            // "#ff7f00": orange 4 
+            // "#542e78": purple 5
+            return st == 0 ? "#33a02c" :
+            st == 1 ? "#000000" :
+            st == 2 ? "#ca0020" :
+            st == 3 ? "#1a4bed":
+            st == 4 ? "#ff7f00":
+            "#542e78";
+        }
+
+        // get street type description
+        function getStreetTypeDescription(st) {
+            return st == 0 ? `<span style="color: #33a02c">CONTINUOUS STREET</span>` :
+            st == 1 ? `<span style="color: #000000">DISCONTINUOUS STREET</span>` :
+            st == 2 ? `<span style="color: #ca0020">WITHIN-SECTOR ADDED STREET</span>` :
+            st == 3 ? `<span style="color: #1a4bed">CROSS-SECTOR ADDED STREET</span>` :
+            st == 4 ? `<span style="color: #ff7f00">WITHIN-SECTOR ADDED OVERLAPPING STREET</span>` :
+                      `<span style="color: #542e78">CROSS-SECTOR ADDED OVERLAPPING STREET</span>` ;
+        }
+
+        // styles a feature - a line segment - based on ss
+        function style(feature) {
+            return {
+                weight: 7,
+                opacity: .8,
+                color: getColor(feature.properties.ss)
+            };
+        }
+
+        // define what happens when a feature is a highlighted during a mouseover event        
+        function highlightFeature(e) {
+            const layer = e.target; // Get the hovered feature
+            const selectedName = layer.feature.properties.osntg; // Get the street name
+
+            // Initialize lengths
+            let totalLength = 0;
+            let continuousLength = 0;
+            let discontinuousLength = 0;
+            let addedLengthWS = 0;
+            let addedLengthCS = 0;
+            let addedLengthWSO = 0;
+            let addedLengthCSO = 0;
+
+            // Initialize counts
+            let totalSegments = 0;
+            let continuousSegments = 0;
+            let discontinuousSegments = 0;
+            let addedSegmentsWS = 0;
+            let addedSegmentsCS = 0;
+            let addedSegmentsWSO = 0;
+            let addedSegmentsCSO = 0;
+
+            // Loop through all segments to calculate lengths
+            streets_geojson.eachLayer(function (otherLayer) {
+                const props = otherLayer.feature.properties;
+                if (props.osntg === selectedName) {
+                    const segmentLength = props.dm || 0; // Default to 0 if no value
+                    const segmentCount = props.ns || 0; // Default to 0 if no value
+
+                    // Add to total length
+                    totalLength += segmentLength;
+                    totalSegments += segmentCount;
+
+                    // Add to specific categories based on ss
+                    if (props.ss === 0) {
+                        continuousLength += segmentLength
+                        continuousSegments += segmentCount;
+                    } else if (props.ss === 1) {
+                        discontinuousLength += segmentLength
+                        discontinuousSegments += segmentCount;
+                    } else if (props.ss === 2) {
+                        addedLengthWS += segmentLength
+                        addedSegmentsWS += segmentCount;
+                    } else if (props.ss === 3) {
+                        addedLengthCS += segmentLength
+                        addedSegmentsCS += segmentCount;
+                    } else if (props.ss === 4) {
+                        addedLengthWSO += segmentLength
+                        addedSegmentsWSO += segmentCount;
+                    } else if (props.ss === 5) {
+                        addedLengthCSO += segmentLength
+                        addedSegmentsCSO += segmentCount;
+                    }
+
+
+                    // Highlight the segment
+                    otherLayer.setStyle({
+                        color: getColor(props.ss), // Color based on ss
+                        weight: 5,          // Thicker border
+                        opacity: 1.0        // Fully opaque
+                    });
+                } else {
+                    // Fade out other segments
+                    otherLayer.setStyle({
+                        opacity: 0.1,
+                        color: 'gray',
+                        weight: 2
+                    });
+                }
+            });
+
+            layer.bringToFront(); // Bring the hovered feature to the front
+
+            // Update the info box with the calculated lengths
+            info.update({
+                osntg: selectedName,
+                totalLength,
+                continuousLength,
+                discontinuousLength,
+                addedLengthWS,
+                addedLengthCS,
+                addedLengthWSO,
+                addedLengthCSO,
+                totalSegments,
+                continuousSegments,
+                discontinuousSegments,
+                addedSegmentsWS,
+                addedSegmentsCS,
+                addedSegmentsWSO,
+                addedSegmentsCSO
+            });
+        }
+
+        function getCitySectorColor(category) {
+            const colors = {
+                'E': '#2de9ec',
+                'EC': '#1fa1a3',
+                'NC': '#542e78',
+                'N': '#8c4cc8',
+                'NE': '#38CF60',
+                'NW': '#1a4bed',
+                'S': '#e6b71c',
+                'SW': '#cc2b28',
+                'W': '#ea1cb3',
+                'C': '#5b5b5b'
+            };
+            return colors[category] || "#000000"; // Default to black if category is unknown
+        }
+
+        function styleCitySector(feature) {
+            return {
+                color: getCitySectorColor(feature.properties.cp),
+                weight: 4,
+                opacity: 1
+            };
+        }
+
+        // load the city sectors
+        const all_city_sectors = L.geoJson(city_sector_lines, {
+            filter: function (feature) {
+                return feature.properties.dist == 40 && feature.properties.li == 0;
+            },
+            style: styleCitySector
+        }
+        ).addTo(map);
+
+
+
+
+        // load the street data
+        const streets_geojson = L.geoJson(all_streets_diss, {
+            style,
+            onEachFeature
+        }).addTo(map);
+
+        // reset the highlighted data
+        function resetHighlight(e) {
+            streets_geojson.eachLayer(function (layer) {
+                layer.setStyle({
+                    color: getColor(layer.feature.properties.ss),
+                    weight: 7,
+                    opacity: 0.8
+                });
+            });
+
+            info.update(); // Clear the info box
+        }
+
+        // not used for now
+        function zoomToFeature(e) {
+            map.fitBounds(e.target.getBounds());
+        }
+
+        // what to do for feach feature
+        function onEachFeature(feature, layer) {
+            layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight
+
+            });
+        }
+
+        // build out the legend by coloring each segment
+        const legend = L.control({ position: 'bottomright' });
+
+        legend.onAdd = function (map) {
+
+            const div = L.DomUtil.create('div', 'info legend');
+            const grades = ['Continuous', 'Discontinuous', 'Within-Sector Added',
+            'Cross-Sector Added', 'Within-Sector Added Overlapping',
+            'Cross-Sector Added Overlapping'];
+            const labels = [];
+            let from, to;
+
+            for (let i = 0; i < grades.length; i++) {
+                from = grades[i];
+
+                labels.push(`<i style="background:${getColor(i)}"></i> ${from}`);
+            }
+
+            div.innerHTML = `<strong>Street Type</strong><br> ${labels.join('<br>')}`;
+            return div;
+        };
+
+        legend.addTo(map);
+
+        // build out the legend by coloring each segement        
+        const city_sector_legend = L.control({ position: 'bottomleft' });
+
+        city_sector_legend.onAdd = function (map) {
+
+            const div = L.DomUtil.create('div', 'info city_sector_legend');
+            // const sectors = ["C", "E", "N", "NE", "NW", "S", "SW", "W",];
+            const sectors = ["NW", "N", "NE", "W", "NC", "E", "C", "EC", "SW", "S"];
+            const sector_labels = [];
+            let from, to;
+
+            for (let i = 0; i < sectors.length; i++) {
+                from = sectors[i];
+
+                console.log(getCitySectorColor(from))
+
+                // sector_labels.push(`<i style="background:${getCitySectorColor(from)}"></i> ${from}`);                
+                sector_labels.push(`<i style="background:${getCitySectorColor(from)}"></i> ${from}`);
+            }
+            div.innerHTML = `<strong>City Sector</strong><br> ${sector_labels.join('<br>')}`
+            return div;
+        };
+
+        city_sector_legend.addTo(map);
+
+    </script>
+</body>
+
+<body>
+    <a href="https://mike-babb.github.io/blog/2025/02/24/seattles-discontinuous-streets-v2.1">Return to post</a>
+    <b> | Source:</b> Added segments were created by <a href="mailto:babb.mike@outlook.com">Michael Babb</a>. See this
+    <a href="https://github.com/mike-babb/seattle_streets"> git repo</a> for detailed information about how these
+    segments were created and the code to do so. See the <a
+        href="https://mike-babb.github.io/blog/2025/02/24/seattles-discontinuous-streets-v2.1#known-issues-and-errata">known
+        issues and errata section</a> for a description of things influencing connectivity and geospatial data issues.
+    If you have any questions or anything looks particularly strange, please let me know: I am happy to address.
+
+</body>
+
+</html>
