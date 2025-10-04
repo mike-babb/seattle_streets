@@ -98,11 +98,23 @@ This image is illustrative of many of the reasons for the discontinuities in Sea
   * 393 new segments across 304 roads | 823 miles
   * 17 segments overlapping with 17 roads | 1 mile
 * Average of ~3.3 within-sector segments added per uniquely named road  
+  * ~2.8 non-overlapping segments added per uniquely named road  
+  * ~1.6 overlapping segments added per uniquely named road  
 * Average of ~1.3 cross-sector segments added per uniquely named road  
+  * ~1.3 non-overlapping segments added per uniquely named road  
+  * ~1.0 overlapping segment per uniquely named road
 * Average added within-sector segment length: ~0.23 Miles  
+  * ~0.29 miles, average non-overlapping segment length
+  * ~145 feet, average overlapping segment length
 * Average added cross-sector segment length: ~2.0 Miles  
+  * ~2.1 miles, average non-overlapping segment length
+  * 220 feet, average overlapping segment length
 * Median added within-segment length: ~448 Feet  
+  * 678 feet, median non-overlapping segment length
+  * 124 feet, median overlapping segment length
 * Median added cross-segment length: ~1.1 Miles  
+  * ~1.2 miles, median non-overlapping segment length
+  * 137 feet, median overlapping segment length
 * Greatest number of within-sector segments added: [1ST AVE NW (15 total, 10 new and 5 overlapping)](/graphics/ex_23_most_added_segments_v3.png)  
 * Longest within-sector segment: ~5 Miles:  [7TH PL S (10 longest added segments)](/graphics/ex_24_longest_added_segments_v3.png)  
 * Shortest within-sector segment: ~4 Feet: [SW CLOVERDALE ST ](/graphics/ex_06_shortest_segment.png)  
