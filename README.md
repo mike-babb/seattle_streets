@@ -1,9 +1,9 @@
 # Identifying Seattle's Discontinuous Streets
 ## Michael Babb, PhD
 ### Created: July 1, 2024
-### Updated V1.0: December 31, 2024
-### Updated V2.0: February 18, 2025
-### Updated V3.0: October 10, 2025
+### Updated v1.0: December 31, 2024
+### Updated v2.0: February 18, 2025
+### Updated v3.0: October 03, 2025
 
 # Seattle's (discontinuous) Street Network
 How many streets in Seattle are discontinuous? Or, "How frequently do roads in Seattle, start, stop, and resume?" This typically looks like a road running for a few blocks, terminating, and then resuming a few blocks later. A prime example is Galer Street. Running east-west through the neighborhoods of Magnolia, Queen Anne, Capitol Hill, and Madison Park.  
