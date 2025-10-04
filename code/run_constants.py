@@ -1,3 +1,6 @@
+# michael babb  
+# 2025 10 03
+
 # RUN CONSTANTS
 
 import os
@@ -62,6 +65,8 @@ S02_SND_WORKING_OUT_FILE_NAME = 'Street_Network_Database_Seattle_working.gpkg'
 # STEP 3: INPUT STREETS - THE WORKING STREETS FROM STEP 2
 S03_SND_WORKING_IN_FILE_NAME = S02_SND_WORKING_OUT_FILE_NAME
 
+S03_CITY_SECTOR_CHECK_WORKING_FILE_NAME = 'city_sector_check_working.xlsx'
+
 # STEP 3: MANUALLY CREATED GROUP NAMES
 S03_STREET_GROUP_IN_FILE_NAME = 'street_groups_working.xlsx'
 
@@ -98,6 +103,7 @@ S05_STREET_CONNECTION_CHECK_FILE_NAME = 'check_connections.gpkg'
 
 S05_RANKED_STREETS_FILE_NAME = 'ranked_streets.gpkg'
 
+S05_CHECK_RANKED_STREETS_FILE_NAME = 'check_street_ranks.xlsx'
 
 ################################################################################
 # STEP 6 CONSTANTS
@@ -161,6 +167,8 @@ S11_STREETS_JSON_FILE_NAME = 'all_streets_diss_v2.geojson'
 ################################################################################
 # STEP 13: VERSION 3 OF THE ADDED SEGMENTS
 S13_MISSING_OUT_FILE_NAME = 'missing_segments_v3.gpkg'
+
+S13_OVERLAPPING_STREETS_TABULATION_FILE_NAME = 'existing_street_tabulations.xlsx'
 
 ################################################################################
 # STEP 14 CONSTANTS
